@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Crypto Exchange App</string>
+    <string name="started_title">Welcome.</string>
+    <string name="started_sub_title">Jumpstart on your Crypto Portfolio!
+        <br><b>Login</b> with your existing account.</br>
+        <br><b>Register</b> to create a new account.</br>
+    </string>
+
+    <string name="illustration_img">Image greets users to login page.</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_login">Login</string>
+
+    <!-- Strings for the login page -->
+    <string name="login_title">Login to app</string>
+    <string name="login_sub_title">
+        <font color='#FB0333'><b>Login</b></font> if you already have an account.
+
+    </string>
+    <string name="login_email">Your email or username</string>
+    <string name="login_password">Your password</string>
+    <string name="login_forgot_pw">Forgot Password?</string>
+
+    <string name="login_havent_account">
+        You don\'t have an account <font color='#FB0333'><b>Register</b></font>
+    </string>
+
+    <!-- Strings for the registration page -->
+    <string name="register_title">Create an account</string>
+
+
+    <string name="register_sub_title">
+        <font color='#FB0333'><b>Register</b></font> to create a new account.
+
+    </string>
+    <string name="register_fullname">Your full name</string>
+    <string name="register_email">Your email</string>
+    <string name="register_username">Your username</string>
+
+    <string name="register_confirm_password">Confirm password</string>
+    <string name="register_have_account">I already have an account <font color='#FB0333'><b>Login</b></font></string>
+
+    <!-- Strings for the home page -->
+    <string name="home_title">Hello World!</string>
+    <string name="home_sub_title">Welcome to Michael\'s Crypto app.</string>
+    <string name="btn_logout">Logout</string>
+
+</resources>
