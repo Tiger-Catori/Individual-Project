@@ -27,7 +27,6 @@
     <!-- Strings for the registration page -->
     <string name="register_title">Create an account</string>
 
-
     <string name="register_sub_title">
         <font color='#FB0333'><b>Register</b></font> to create a new account.
 
@@ -43,5 +42,17 @@
     <string name="home_title">Hello World!</string>
     <string name="home_sub_title">Welcome to Michael\'s Crypto app.</string>
     <string name="btn_logout">Logout</string>
+
+    <!-- Strings for the reset password page -->
+    <string name="reset_pw_title">Reset your password</string>
+    <string name="reset_pw_sub_title">
+        <font color='#FB0333'><b>Reset Password </b></font>
+        <br>\n If you forgot your password.</br>
+    </string>
+    <string name="btn_reset_pw">Reset Password</string>
+
+    <string name="back_to_login">
+        Back to <font color='#FB0333'><b>Login</b></font>
+    </string>
 
 </resources>
