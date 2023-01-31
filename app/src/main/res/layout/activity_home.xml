@@ -37,7 +37,7 @@
         android:layout_marginTop="15dp"
         android:text="@string/btn_logout"
 
-        style="@style/ButtonPurple"
+        style="@style/ButtonRed"
 
         />
 
