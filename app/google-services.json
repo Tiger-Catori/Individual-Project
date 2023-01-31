@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "758072190390",
+    "project_id": "authenticationapp-1459d",
+    "storage_bucket": "authenticationapp-1459d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758072190390:android:f8bf8c000769c0577b8d17",
+        "android_client_info": {
+          "package_name": "com.example.cryptoexchangeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "758072190390-pgupqvrnks2cv1kkcid9n15p2k3mseu2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWKREeEryXJSXmE3UQp01RBhQKFbuEIY4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "758072190390-pgupqvrnks2cv1kkcid9n15p2k3mseu2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
