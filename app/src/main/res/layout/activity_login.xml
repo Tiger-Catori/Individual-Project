@@ -87,6 +87,17 @@
         app:layout_constraintTop_toBottomOf='@+id/til_password' />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_login_google"
+        style="@style/ButtonRed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="@string/login_with_google"
+        app:layout_constraintBottom_toTopOf="@id/btn_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -112,3 +123,11 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--
+        app:icon="@drawable/google_logo"
+        app:iconGravity="textTop"
+        app:iconPadding="4dp"
+        app:iconSize="8dp"
+        app:iconTint="@color/black"
+     -->

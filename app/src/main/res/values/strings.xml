@@ -9,6 +9,7 @@
     <string name="illustration_img">Image is of purple a bitcoin logo.</string>
     <string name="btn_register">Register</string>
     <string name="btn_login">Login</string>
+    <string name="login_with_google">Login with Google</string>
 
     <!-- Strings for the login page -->
     <string name="login_title">Login to app</string>
@@ -53,6 +54,10 @@
 
     <string name="back_to_login">
         Back to <font color='#FB0333'><b>Login</b></font>
+    </string>
+
+    <string name="webclient_id">
+        758072190390-pgupqvrnks2cv1kkcid9n15p2k3mseu2.apps.googleusercontent.com
     </string>
 
 </resources>
