@@ -60,4 +60,17 @@
         758072190390-pgupqvrnks2cv1kkcid9n15p2k3mseu2.apps.googleusercontent.com
     </string>
 
+
+
+    <!-- Strings for the dashboard menu -->
+    <string name="favourites">Favourites</string>
+    <string name="recent">Recent</string>
+    <string name="my_files">My files</string>
+    <string name="backups">Backups</string>
+    <string name="langauge">Langauge</string>
+    <string name="settings">Settings</string>
+    <string name="account">Account</string>
+    <string name="logout">Logout</string>
+    <string name="shared_with_me">Shared with me</string>
+
 </resources>
