@@ -3,14 +3,14 @@ package com.example.cryptoexchangeapp
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
+import android.graphics.Typeface.create
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toolbar
+import android.widget.*
+import androidx.core.content.res.ResourcesCompat
 import com.example.cryptoexchangeapp.databinding.ActivityHomeBinding
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.auth.FirebaseAuth
 
 class HomeActivity : AppCompatActivity() {
@@ -27,6 +27,9 @@ class HomeActivity : AppCompatActivity() {
 
         val email = intent.getStringExtra("Email")
         val displayName = intent.getStringExtra("Name")
+        val toolbar = findViewById<MaterialToolbar>(R.id.top_app_bar)
+        val customFont = ResourcesCompat.getFont(this, R.font.montserrat)
+        // toolbar.typeface = customFont
 
         // findViewById<TextView>(R.id.textView).text = email + "\n" + displayName
 
@@ -67,6 +70,11 @@ class HomeActivity : AppCompatActivity() {
 }
 
 /*
+
+fun EditText.getTextString(): String {
+        this.text.toString()
+    }
+
 fun changeToolbarFont(toolbar: Toolbar, context: Activity) {
     for (i in 0 until toolbar.getChildCount()) {
         val view: View = toolbar.getChildAt(i)

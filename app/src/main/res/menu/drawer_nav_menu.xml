@@ -64,11 +64,7 @@
                     android:title="@string/langauge"
                     android:fontFamily="@font/montserrat"/>
 
-                <item
-                    android:id="@+id/btn_logout"
-                    android:icon="@drawable/baseline_login_24"
-                    android:title="@string/btn_logout"
-                    android:fontFamily="@font/montserrat"/>
+
             </menu>
 
         </item>
@@ -77,3 +73,12 @@
 
     </group>
 </menu>
+
+    <!--
+                <item
+                    android:id="@+id/btn_logout"
+                    android:icon="@drawable/baseline_login_24"
+                    android:title="@string/btn_logout"
+                    android:fontFamily="@font/montserrat"/>
+
+    -->
