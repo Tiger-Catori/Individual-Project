@@ -61,7 +61,6 @@
     </string>
 
 
-
     <!-- Strings for the dashboard menu -->
     <string name="favourites">Favourites</string>
     <string name="recent">Recent</string>
@@ -72,5 +71,8 @@
     <string name="account">Account</string>
     <string name="logout">Logout</string>
     <string name="shared_with_me">Shared with me</string>
+
+    <!-- Fragment -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
