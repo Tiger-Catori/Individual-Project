@@ -126,10 +126,3 @@
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--
-        app:icon="@drawable/google_logo"
-        app:iconGravity="textTop"
-        app:iconPadding="4dp"
-        app:iconSize="8dp"
-        app:iconTint="@color/black"
-     -->

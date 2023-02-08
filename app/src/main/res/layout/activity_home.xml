@@ -47,7 +47,14 @@
             app:navigationIcon="@drawable/baseline_menu_24"
             app:title=""
             app:titleTextColor="@color/white"
+            android:visibility="gone"
             />
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/currencyRecyclerView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
+
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
@@ -62,40 +69,46 @@
             app:tabGravity="fill"
             app:tabMode="fixed"
             android:background="@color/black"
-            app:tabIndicatorColor="?colorPrimary"
             android:layout_gravity="bottom"
             android:layout_alignParentBottom="true"
             android:paddingBottom="8dp"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            app:tabIndicatorColor="@color/primary_color"
+            >
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/baseline_home_24"
+                app:tabIconTint="@color/white"
                 android:text=""/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/baseline_shopping_basket_24"
+                app:tabIconTint="@color/white"
                 android:text=""/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/baseline_auto_graph_24"
+                app:tabIconTint="@color/white"
                 android:text=""/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/baseline_wallet_24"
+                app:tabIconTint="@color/white"
                 android:text=""/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/baseline_newspaper_24"
+                app:tabIconTint="@color/white"
                 android:text=""/>
 
 
@@ -148,65 +161,5 @@
 
 
 <!--
-
-        <TextView
-            android:id="@+id/home_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/home_title"
-            android:textAlignment="center"
-            style="@style/Title"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            />
-
-        <TextView
-            android:id="@+id/home_sub_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/home_sub_title"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:layout_gravity="center"
-            style="@style/SubTitle"
-            />
-
-    <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
-            style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
-
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/top_app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title="Drawer Navigation"
-                app:navigationIcon="@drawable/baseline_menu_24"
-                android:background="@android:color/transparent"
-                android:elevation="0dp"
-                style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
-                />
-
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_logout"
-            style="@style/ButtonRed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="300dp"
-            android:text="@string/btn_logout"
-            android:padding="0dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-
-             />
-
-
-
 
 -->

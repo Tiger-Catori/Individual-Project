@@ -1,8 +1,10 @@
-package com.example.cryptoexchangeapp
+package com.example.cryptoexchangeapp.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+// import com.example.cryptoexchangeapp.apis.fragment
+import com.example.cryptoexchangeapp.fragment.*
 
 class TabPageAdapter(activity: FragmentActivity, private val tabCount: Int) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int = tabCount
