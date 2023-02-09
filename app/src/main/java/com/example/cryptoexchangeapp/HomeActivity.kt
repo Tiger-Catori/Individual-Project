@@ -39,6 +39,8 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
+        // recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+
     }
 
 //    private fun setUpTabBar() {

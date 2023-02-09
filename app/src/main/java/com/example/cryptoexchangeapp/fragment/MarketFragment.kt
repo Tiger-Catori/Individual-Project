@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.cryptoexchangeapp.R
 import com.example.cryptoexchangeapp.adapter.MarketAdapter
 import com.example.cryptoexchangeapp.databinding.FragmentMarketBinding
 import com.example.cryptoexchangeapp.models.CryptoCurrency
@@ -32,8 +33,10 @@ class MarketFragment : Fragment() {
         list = listOf()
         adapter = MarketAdapter(requireContext(), list as ArrayList<CryptoCurrency>)
         binding.currencyRecyclerView.adapter = adapter
+        // currencyRecyclerView = findViewById( R.id.currencyRecyclerView );
+        // currencyRecyclerView.setAdapter(  );
 
-        lifecycle
+        //lifecycle
 
         return binding.root
     }
