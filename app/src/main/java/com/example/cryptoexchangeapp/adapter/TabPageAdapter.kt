@@ -13,6 +13,7 @@ class TabPageAdapter(activity: FragmentActivity, private val tabCount: Int) : Fr
  *  The method takes an integer called
  *  @param position, which represents the position of the desired fragment.
  */
+
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> HomeFragment()

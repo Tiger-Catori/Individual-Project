@@ -69,10 +69,10 @@ class HomeFragment : Fragment() {
 
         TabLayoutMediator(binding.tabLayout, binding.contentViewPager) {
                 tab, position ->
-            var title = if (position == 0) {
-                "Top Gainers"
-            } else {
-                "Top Losers"
+            var title = when (position) {
+                0 -> "Top Gains"
+                1 -> "Top Losses"
+                else -> ""
             }
             tab.text = title
         }.attach()

@@ -34,22 +34,22 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>) : Recy
      */
     override fun onBindViewHolder(holder: MarketViewHolder, position: Int) {
         val item = list[position]
-        holder.binding.currencyNameTextView.text = item.name
-        holder.binding.currencySymbolTextView.text = item.symbol
+        val price = "$ ${String.format("%.2f", item.quotes[0].price)}"
+        val change = "${if (item.quotes[0].percentChange24h > 0) "+" else "-"} ${String.format("%.2f", item.quotes[0].percentChange24h)} %"
+        val changeColor = if (item.quotes[0].percentChange24h > 0)
+            context.resources.getColor(R.color.green)
+        else
+            context.resources.getColor(R.color.red)
 
-        loadImage(holder.binding.currencyImageView, "https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
-        loadImage(holder.binding.currencyChartImageView, "https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd${item.id}.png")
-
-        holder.binding.currencyPriceTextView.text = "$ ${String.format("%.2f", item.quotes[0].price)}"
-
-        holder.binding.currencyChangeTextView.text =
-            "${if (item.quotes[0].percentChange24h > 0) "+" else "-"} ${String.format("%.2f", item.quotes[0].percentChange24h)} %"
-        holder.binding.currencyChangeTextView.setTextColor(
-            if (item.quotes[0].percentChange24h > 0)
-                context.resources.getColor(R.color.green)
-            else
-                context.resources.getColor(R.color.red)
-        )
+        holder.binding.apply {
+            currencyNameTextView.text = item.name
+            currencySymbolTextView.text = item.symbol
+            loadImage(currencyImageView, "https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
+            loadImage(currencyChartImageView, "https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd${item.id}.png")
+            currencyPriceTextView.text = price
+            currencyChangeTextView.text = change
+            currencyChangeTextView.setTextColor(changeColor)
+        }
     }
 
     private fun loadImage(imageView: ImageView, url: String) {

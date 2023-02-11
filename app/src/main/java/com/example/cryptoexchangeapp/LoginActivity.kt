@@ -52,8 +52,8 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun formValidation() {
-        // Username Validation
 
+// Username Validation
         val usernameStream = RxTextView.textChanges(binding.etEmail)
             .skipInitialValue()
             .map { username ->
@@ -77,16 +77,15 @@ class LoginActivity : AppCompatActivity() {
 // Button Enable True or False.
         val invalidFieldStream = Observable.combineLatest(
             usernameStream, passwordStream
-        ) { usernameInvalid: Boolean, passwordInvalid: Boolean ->
+        ) { usernameInvalid, passwordInvalid ->
             !usernameInvalid && !passwordInvalid
         }
         invalidFieldStream.subscribe { isValid ->
-            if (isValid) {
-                binding.btnLogin.isEnabled = true
-                binding.btnLogin.backgroundTintList = ContextCompat.getColorStateList(this, R.color.primary_color)
+            binding.btnLogin.isEnabled = isValid
+            binding.btnLogin.backgroundTintList = if (isValid) {
+                ContextCompat.getColorStateList(this, R.color.primary_color)
             } else {
-                binding.btnLogin.isEnabled = false
-                binding.btnLogin.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.darker_gray)
+                ContextCompat.getColorStateList(this, android.R.color.darker_gray)
             }
         }
     }

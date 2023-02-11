@@ -52,28 +52,41 @@ class ResetPasswordActivity : AppCompatActivity() {
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches()
             }
         emailStream.subscribe{
-            showValidEmailAlert(it)
+            showInvalidEmailAlert(it)
         }
     }
 
+
+    /**
+     * Function to reset the password of the user in the app
+     * using firebase authentication
+     */
     private fun resetPassword() {
-        //  Reset Password
         binding.btnResetPw.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
-            auth.sendPasswordResetEmail(email)
-                .addOnCompleteListener(this) { reset ->
-                    if (reset.isSuccessful) {
-                        Intent(this, LoginActivity::class.java).also {
-                            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(it)
-                            Toast.makeText(this, "Check email for password reset!", Toast.LENGTH_SHORT).show()
+            if (email.isNotEmpty()) {
+                auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(this) { resetTask ->
+                        if (resetTask.isSuccessful) {
+                            Intent(this, LoginActivity::class.java).also {
+                                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(it)
+                                showToast("Password reset email sent, please check your inbox.")
+                            }
+                        } else {
+                            showToast("Error: ${resetTask.exception?.localizedMessage}")
                         }
-                    } else {
-                        Toast.makeText(this, reset.exception?.message, Toast.LENGTH_SHORT).show()
                     }
-                }
+            } else {
+                showToast("Please enter your email")
+            }
         }
     }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
 
     private fun initViews() {
         //  Click
@@ -96,7 +109,7 @@ class ResetPasswordActivity : AppCompatActivity() {
      * background color is changed to the primary color of the app.
      * In this case red.
      */
-    private fun showValidEmailAlert(isNotValid: Boolean) {
+    private fun showInvalidEmailAlert(isNotValid: Boolean) {
         binding.etEmail.error = if (isNotValid) "Email not valid!" else null
         binding.btnResetPw.isEnabled = !isNotValid
         binding.btnResetPw.backgroundTintList = ContextCompat.getColorStateList(

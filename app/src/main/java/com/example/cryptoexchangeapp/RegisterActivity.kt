@@ -42,80 +42,59 @@ class RegisterActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
     }
 
+
     private fun formValidation() {
         // Fullname Validation
         val nameStream = RxTextView.textChanges(binding.etFullname)
             .skipInitialValue()
-            .map { name ->
-                name.isEmpty()
-            }
+            .map { name -> name.isEmpty() }
 
-        nameStream.subscribe {
-            showNameExistAlert(it)
-        }
-
-// Email Validation
+        // Email Validation
         val emailStream = RxTextView.textChanges(binding.etEmail)
             .skipInitialValue()
-            .map { email ->
-                !Patterns.EMAIL_ADDRESS.matcher(email).matches()
-            }
-        emailStream.subscribe{
-            showValidEmailAlert(it)
-        }
+            .map { email -> !Patterns.EMAIL_ADDRESS.matcher(email).matches() }
 
-// Username Validation
+        // Username Validation
         val usernameStream = RxTextView.textChanges(binding.etUsername)
             .skipInitialValue()
-            .map { username ->
-                username.length < 6
-            }
-        usernameStream.subscribe {
-            showTextMinimalAlert(it, "Username")
-        }
+            .map { username -> username.length < 6 }
 
-// Password Validation
+        // Password Validation
         val passwordStream = RxTextView.textChanges(binding.etPassword)
             .skipInitialValue()
-            .map { password ->
-                password.length < 8
-            }
-        passwordStream.subscribe {
-            showTextMinimalAlert(it, "Password")
-        }
+            .map { password -> password.length < 8 }
 
-// Confirm Password Validation
-        val passwordConfirmStream = Observable.merge(
-            RxTextView.textChanges(binding.etPassword)
-                .skipInitialValue()
-                .map { password ->
-                    password.toString() != binding.etConfirmPassword.text.toString()
-                },
+        // Confirm Password Validation
+        val passwordConfirmStream = Observable.combineLatest(
+            RxTextView.textChanges(binding.etPassword),
             RxTextView.textChanges(binding.etConfirmPassword)
-                .skipInitialValue()
-                .map { confirmPassword ->
-                    confirmPassword.toString() != binding.etPassword.text.toString()
-                })
-        passwordConfirmStream.subscribe {
-            showPasswordConfirmAlert(it)
+        ) { password, confirmPassword ->
+            password.toString() != confirmPassword.toString()
         }
 
-// Button Enable True or False.
-        val invalidFieldStream = Observable.combineLatest(
-            nameStream, emailStream, usernameStream, passwordStream, passwordConfirmStream
-        ) { nameInvalid: Boolean, emailInvalid: Boolean, usernameInvalid: Boolean, passwordInvalid: Boolean, passwordConfirmInvalid: Boolean
-            -> !nameInvalid && !emailInvalid && !usernameInvalid && !passwordInvalid && !passwordConfirmInvalid
-        }
-        invalidFieldStream.subscribe { isValid ->
-            if (isValid) {
-                binding.btnRegister.isEnabled = true
-                binding.btnRegister.backgroundTintList = ContextCompat.getColorStateList(this, R.color.primary_color)
+        // Validation Streams
+        val validationStreams = listOf(
+            nameStream.doOnNext { showNameExistAlert(it) },
+            emailStream.doOnNext { showValidEmailAlert(it) },
+            usernameStream.doOnNext { showTextMinimalAlert(it, "Username") },
+            passwordStream.doOnNext { showTextMinimalAlert(it, "Password") },
+            passwordConfirmStream.doOnNext { showPasswordConfirmAlert(it) }
+        )
+
+        // Button Enable True or False.
+        Observable.combineLatest(validationStreams) {
+            !it.any { invalid -> invalid as Boolean }
+        }.subscribe { isValid ->
+            binding.btnRegister.isEnabled = isValid
+            binding.btnRegister.backgroundTintList = if (isValid) {
+                ContextCompat.getColorStateList(this, R.color.primary_color)
             } else {
-                binding.btnRegister.isEnabled = false
-                binding.btnRegister.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.darker_gray)
+                ContextCompat.getColorStateList(this, android.R.color.darker_gray)
             }
         }
     }
+
+
 
     private fun initViews() {
         binding.btnRegister.setOnClickListener{

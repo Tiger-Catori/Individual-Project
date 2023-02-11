@@ -48,6 +48,8 @@ class TopMarketAdapter(var context: Context, val list: List<CryptoCurrency>) : R
         val imageUrl = "https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png"
         Glide.with(context)
             .load(imageUrl)
+            //.error(R.drawable.ic_placeholder) // Display a placeholder image in case of error
+            //.placeholder(R.drawable.ic_loading) // Display a loading indicator while the image is being fetched
             .into(holder.binding.topCurrencyImageView)
 
         val colorRes = if (item.quotes!![0].percentChange24h > 0) R.color.green else R.color.red

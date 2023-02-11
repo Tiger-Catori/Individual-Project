@@ -45,27 +45,12 @@ class TopLossGainFragment : Fragment() {
             if (res.body() != null) {
                 withContext(Dispatchers.Main) {
                     val dataItem = res.body()!!.data.cryptoCurrencyList
-
-                    Collections.sort(dataItem) {
-                            o1,o2 -> o2.quotes[0].percentChange24h.toInt()
-                        .compareTo(o1.quotes[0].percentChange24h.toInt())
+                    val sortedData = when (position) {
+                        0 -> dataItem.sortedBy { it.quotes[0].percentChange24h }.reversed().take(10)
+                        else -> dataItem.sortedByDescending { it.quotes[0].percentChange24h }.take(10)
                     }
 
-                    val list = ArrayList<CryptoCurrency>()
-
-                    if (position == 0) {
-                        list.clear()
-                        for (i in 0..9)
-                            list.add(dataItem[i])
-                        binding.topGainLoseRecyclerView.adapter = MarketAdapter(requireContext(), list)
-
-                    } else {
-                        list.clear()
-                        for (i in 0..9)
-                            list.add(dataItem[dataItem.size-1-i])
-                        binding.topGainLoseRecyclerView.adapter = MarketAdapter(requireContext(), list)
-                    }
-
+                    binding.topGainLoseRecyclerView.adapter = MarketAdapter(requireContext(), sortedData)
                 }
             }
         }

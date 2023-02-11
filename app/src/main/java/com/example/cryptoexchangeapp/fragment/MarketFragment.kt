@@ -39,8 +39,6 @@ class MarketFragment : Fragment() {
         list = listOf()
         adapter = MarketAdapter(requireContext(), list)
         binding.currencyRecyclerView.adapter = adapter
-        // currencyRecyclerView = findViewById( R.id.currencyRecyclerView );
-        // currencyRecyclerView.setAdapter(  );
 
         lifecycleScope.launch(Dispatchers.IO) {
             val res = ApiUtilities.getInstance().create(ApiInterface::class.java).getMarketData()
@@ -48,10 +46,10 @@ class MarketFragment : Fragment() {
             if (res.body() != null) {
                 withContext(Dispatchers.Main) {
                     list = res.body()!!.data.cryptoCurrencyList
-
                     adapter.updateData(list)
-                    //binding.spinKitView.visibility = GONE
                 }
+            } else {
+
             }
         }
 
