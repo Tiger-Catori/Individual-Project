@@ -27,9 +27,23 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 // Firebase Auth
-        auth = FirebaseAuth.getInstance()
+        initFirebase()
 
-// Fullname Validation
+
+// Validation
+        formValidation()
+
+// Click
+        initViews()
+    }
+
+
+    private fun initFirebase() {
+        auth = FirebaseAuth.getInstance()
+    }
+
+    private fun formValidation() {
+        // Fullname Validation
         val nameStream = RxTextView.textChanges(binding.etFullname)
             .skipInitialValue()
             .map { name ->
@@ -47,7 +61,7 @@ class RegisterActivity : AppCompatActivity() {
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches()
             }
         emailStream.subscribe{
-            showEmailValidAlert(it)
+            showValidEmailAlert(it)
         }
 
 // Username Validation
@@ -88,10 +102,10 @@ class RegisterActivity : AppCompatActivity() {
 
 // Button Enable True or False.
         val invalidFieldStream = Observable.combineLatest(
-            nameStream, emailStream, usernameStream, passwordStream, passwordConfirmStream,
-            { nameInvalid: Boolean, emailInvalid: Boolean, usernameInvalid: Boolean, passwordInvalid: Boolean, passwordConfirmInvalid: Boolean ->
-                !nameInvalid && ! emailInvalid && ! usernameInvalid && !passwordInvalid && ! passwordConfirmInvalid
-            })
+            nameStream, emailStream, usernameStream, passwordStream, passwordConfirmStream
+        ) { nameInvalid: Boolean, emailInvalid: Boolean, usernameInvalid: Boolean, passwordInvalid: Boolean, passwordConfirmInvalid: Boolean
+            -> !nameInvalid && !emailInvalid && !usernameInvalid && !passwordInvalid && !passwordConfirmInvalid
+        }
         invalidFieldStream.subscribe { isValid ->
             if (isValid) {
                 binding.btnRegister.isEnabled = true
@@ -101,9 +115,9 @@ class RegisterActivity : AppCompatActivity() {
                 binding.btnRegister.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.darker_gray)
             }
         }
+    }
 
-
-// Click
+    private fun initViews() {
         binding.btnRegister.setOnClickListener{
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
@@ -115,33 +129,60 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+// Error Alerts
     private fun showNameExistAlert(isNotValid: Boolean) {
-        binding.etFullname.error = if (isNotValid) "Name cannot be empty" else null
+        binding.etFullname.error = if (isNotValid) getString(R.string.error_name_empty) else null
     }
 
+
+    /**
+     * This method takes in
+     * @param isNotValid
+     * @param text
+     * The purpose of the method is to show an error message
+     * for either the username or password text field if the
+     * input text is not valid, and remove the error message if the input text is valid.
+     */
     private fun showTextMinimalAlert(isNotValid: Boolean, text: String) {
-        if (text == "Username")
-            binding.etUsername.error = if (isNotValid) "$text Must be more than 6 characters" else null
-        else if (text == "Password")
-            binding.etPassword.error = if (isNotValid) "$text Must be more than 8 characters" else null
+        val errorMessage = when (text) {
+            "Username" -> if (isNotValid) "$text must be more than 6 characters" else null
+            "Password" -> if (isNotValid) "$text must be more than 8 characters" else null
+            else -> null
+        }
+
+        when (text) {
+            "Username" -> binding.etUsername.error = errorMessage
+            "Password" -> binding.etPassword.error = errorMessage
+        }
     }
 
-    private fun showEmailValidAlert(isNotValid: Boolean) {
-        binding.etEmail.error = if (isNotValid) "Email not valid" else null
+    private fun showValidEmailAlert(isNotValid: Boolean) {
+        binding.etEmail.error = if (isNotValid) getString(R.string.error_email_not_valid) else null
     }
 
     private fun showPasswordConfirmAlert(isNotValid: Boolean) {
-        binding.etConfirmPassword.error = if (isNotValid) "The passwords are not the same" else null
+        binding.etConfirmPassword.error = if (isNotValid) getString(R.string.error_passwords_not_match) else null
     }
 
+    /**
+     * The regiserUser is used to create a new user account with,
+     * @param email &
+     * @param password
+     * It uses the createUserWithEmailAndPassword method from the Firebase Authentication
+     * (auth) instance. If the account creation is successful,
+     * it starts the LoginActivity and shows a toast message with
+     * "Registration Successful". If the account creation is not successful,
+     * it shows a default message of "Unknown error occurred".
+     */
     private fun registerUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) {
-                if (it.isSuccessful) {
+            .addOnCompleteListener(this) {task ->
+                if (task.isSuccessful) {
                     startActivity(Intent(this, LoginActivity::class.java))
-                    Toast.makeText(this, "Registeration Successful",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Registration Successful",Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, it.exception?.message,Toast.LENGTH_SHORT).show()
+                    val errorMessage = task.exception?.message ?: "Unknown error occurred"
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             }
     }

@@ -17,25 +17,43 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance()
+        initFirebase()
+        initViews()
+    }
 
+    private fun initFirebase() {
+        auth = FirebaseAuth.getInstance()
+    }
+
+    private fun initViews() {
         binding.btnLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
-        binding.btnRegister.setOnClickListener{
+        binding.btnRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
+
+    /**
+     * The onStart() method is a lifecycle method in the
+     * Android framework that is called when the
+     * activity becomes visible to the user.
+     * In this implementation the method checks if there is a
+     * current user in the FirebaseAuth instance (auth). If there is a current user,
+     * the method launches the MainActivity and sets flags such that the MainActivity
+     * is the only task on the activity stack. This is done to ensure that users are not able
+     * to navigate back to the login screen if they have already logged in.
+     */
     override fun onStart() {
         super.onStart()
-        if (auth.currentUser != null) {
-            Intent(this, MainActivity::class.java).also {
-                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(it)
-
-            }
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val mainIntent = Intent(this, MainActivity::class.java)
+            mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(mainIntent)
         }
     }
+
 }

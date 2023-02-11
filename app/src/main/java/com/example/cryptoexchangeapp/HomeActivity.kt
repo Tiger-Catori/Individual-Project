@@ -3,7 +3,10 @@ package com.example.cryptoexchangeapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.viewpager2.widget.ViewPager2
+import com.example.cryptoexchangeapp.adapter.TabPageAdapter
 import com.example.cryptoexchangeapp.databinding.ActivityHomeBinding
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 // import kotlinx.android.synthetic.main.activity_home.*
 
@@ -16,7 +19,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //setUpTabBar()
+        // setUpTabBar()
 
         auth = FirebaseAuth.getInstance()
 
@@ -58,11 +61,11 @@ class HomeActivity : AppCompatActivity() {
 //                viewPager.currentItem = tab.position
 //            }
 //
-//            override fun onTabUnselected(tab: Tab?) {
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {
 //
 //            }
 //
-//            override fun onTabReselected(tab: Tab?) {
+//            override fun onTabReselected(tab: TabLayout.Tab?) {
 //
 //            }
 //        })

@@ -5,10 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.cryptoexchangeapp.R
 import com.example.cryptoexchangeapp.adapter.MarketAdapter
+import com.example.cryptoexchangeapp.apis.ApiInterface
+import com.example.cryptoexchangeapp.apis.ApiUtilities
 import com.example.cryptoexchangeapp.databinding.FragmentMarketBinding
 import com.example.cryptoexchangeapp.models.CryptoCurrency
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * A simple [Fragment] subclass.
@@ -31,12 +37,23 @@ class MarketFragment : Fragment() {
         binding = FragmentMarketBinding.inflate(layoutInflater)
 
         list = listOf()
-        adapter = MarketAdapter(requireContext(), list as ArrayList<CryptoCurrency>)
+        adapter = MarketAdapter(requireContext(), list)
         binding.currencyRecyclerView.adapter = adapter
         // currencyRecyclerView = findViewById( R.id.currencyRecyclerView );
         // currencyRecyclerView.setAdapter(  );
 
-        //lifecycle
+        lifecycleScope.launch(Dispatchers.IO) {
+            val res = ApiUtilities.getInstance().create(ApiInterface::class.java).getMarketData()
+
+            if (res.body() != null) {
+                withContext(Dispatchers.Main) {
+                    list = res.body()!!.data.cryptoCurrencyList
+
+                    adapter.updateData(list)
+                    //binding.spinKitView.visibility = GONE
+                }
+            }
+        }
 
         return binding.root
     }

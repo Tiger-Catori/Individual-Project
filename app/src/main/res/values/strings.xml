@@ -77,4 +77,10 @@
     <string name="search_hint">Search...</string>
     <string name="not_found">Not found.</string>
 
+
+    <!-- Error messages. -->
+    <string name="error_passwords_not_match">The passwords are not the same</string>
+    <string name="error_email_not_valid">Email not valid</string>
+    <string name="error_name_empty">Name cannot be empty</string>
+
 </resources>

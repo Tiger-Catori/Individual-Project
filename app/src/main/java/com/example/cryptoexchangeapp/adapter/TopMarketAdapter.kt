@@ -1,11 +1,13 @@
-package com.example.cryptoexchangeapp
+package com.example.cryptoexchangeapp.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.cryptoexchangeapp.R
 import com.example.cryptoexchangeapp.databinding.TopCurrencyLayoutBinding
 import com.example.cryptoexchangeapp.models.CryptoCurrency
 
@@ -22,26 +24,37 @@ class TopMarketAdapter(var context: Context, val list: List<CryptoCurrency>) : R
 
     override fun getItemCount() = list.size
 
+
+    /**
+     * This is part of a RecyclerView adapter and it is called for each item in the list to bind
+     * the data to the respective view holder. It takes in
+     * @param holder
+     * @param position
+     * The method first retrieves the item from the list at the given position
+     * and sets the text for the topCurrencyNameTextView to the name of the item.
+     * Then, it loads an image from a URL using the Glide library and sets it topCurrencyImageView
+     *  Finally, the method sets the color and text of the topCurrencyChangeTextView
+     *  based on the percentChange24h of the item's quote. If percentChange24h is
+     *  greater than 0, the text color is set to green, otherwise it is set to red.
+     *  The text of the view is set to either a positive or negative sign
+     *  followed by the percentChange24h value.
+     */
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CryptoCurrencyViewHolder, position: Int) {
         val item = list[position]
 
         holder.binding.topCurrencyNameTextView.text = item.name
 
-        Glide.with(context).load("https://s2.coinmarketcap.com/static/img/coins/64x64/" + item.id + ".png")
-            //.thumbnail(Glide.with(context).load(R.drawable.spinner))
+        val imageUrl = "https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png"
+        Glide.with(context)
+            .load(imageUrl)
             .into(holder.binding.topCurrencyImageView)
 
-
-        if (item.quotes!![0].percentChange24h > 0) {
-            holder.binding.topCurrencyChangeTextView.setTextColor(context.resources.getColor(R.color.green))
-            holder.binding.topCurrencyChangeTextView.text = "+ ${item.quotes[0].percentChange24h}"
-        } else {
-            holder.binding.topCurrencyChangeTextView.setTextColor(context.resources.getColor(R.color.red))
-            holder.binding.topCurrencyChangeTextView.text = "- ${item.quotes[0].percentChange24h}"
-        }
-
-
+        val colorRes = if (item.quotes!![0].percentChange24h > 0) R.color.green else R.color.red
+        holder.binding.topCurrencyChangeTextView.setTextColor(context.resources.getColor(colorRes))
+        holder.binding.topCurrencyChangeTextView.text = "${if (item.quotes[0].percentChange24h > 0) "+" else "-"} ${item.quotes[0].percentChange24h}"
     }
+
 }
 
 //data class CryptoCurrencyModel(

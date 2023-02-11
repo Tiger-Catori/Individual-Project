@@ -33,6 +33,10 @@ class TopLossGainFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * The getMarketData method retrieves market data from an API
+     * and displays it in the form of a list.
+     */
     private fun getMarketData() {
         val position = requireArguments().getInt("position")
         lifecycleScope.launch(Dispatchers.IO) {
@@ -43,7 +47,7 @@ class TopLossGainFragment : Fragment() {
                     val dataItem = res.body()!!.data.cryptoCurrencyList
 
                     Collections.sort(dataItem) {
-                        o1,o2 -> o2.quotes[0].percentChange24h.toInt()
+                            o1,o2 -> o2.quotes[0].percentChange24h.toInt()
                         .compareTo(o1.quotes[0].percentChange24h.toInt())
                     }
 
@@ -66,4 +70,8 @@ class TopLossGainFragment : Fragment() {
             }
         }
     }
+
+
+
+
 }

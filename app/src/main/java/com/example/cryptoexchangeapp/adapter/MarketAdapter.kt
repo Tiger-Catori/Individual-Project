@@ -4,13 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptoexchangeapp.R
 import com.example.cryptoexchangeapp.databinding.CurrencyItemBinding
 import com.example.cryptoexchangeapp.models.CryptoCurrency
 
-class MarketAdapter(var context: Context, var list: ArrayList<CryptoCurrency>) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
+class MarketAdapter(var context: Context, var list: List<CryptoCurrency>) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
 
     inner class MarketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var binding = CurrencyItemBinding.bind(view)
@@ -23,29 +24,43 @@ class MarketAdapter(var context: Context, var list: ArrayList<CryptoCurrency>) :
 
     override fun getItemCount(): Int = list.size
 
+
+    /**
+     * In this particular method, for each item in the list, it sets the currency
+     * name and symbol to the corresponding text views. It then loads the currency
+     * icon and chart images using the Glide library. It sets the currency price
+     * and percent change to the appropriate text views and sets the text color
+     * based on whether the percent change is positive or negative.
+     */
     override fun onBindViewHolder(holder: MarketViewHolder, position: Int) {
         val item = list[position]
         holder.binding.currencyNameTextView.text = item.name
         holder.binding.currencySymbolTextView.text = item.symbol
 
-        Glide.with(context).load("https://s2.coinmarketcap.com/static/img/coins/64x64/" + item.id + ".png")
-            //.thumbnail(Glide.with(context).load(R.drawable.spinner))
-            .into(holder.binding.currencyImageView)
+        loadImage(holder.binding.currencyImageView, "https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
+        loadImage(holder.binding.currencyChartImageView, "https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd${item.id}.png")
 
-        Glide.with(context).load("https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd" + item.id + ".png")
-            //.thumbnail(Glide.with(context).load(R.drawable.spinner))
-            .into(holder.binding.currencyChartImageView)
+        holder.binding.currencyPriceTextView.text = "$ ${String.format("%.2f", item.quotes[0].price)}"
 
-        holder.binding.currencyPriceTextView.text =
-        "${String.format("$%.02f", item.quotes[0].price)} "
+        holder.binding.currencyChangeTextView.text =
+            "${if (item.quotes[0].percentChange24h > 0) "+" else "-"} ${String.format("%.2f", item.quotes[0].percentChange24h)} %"
+        holder.binding.currencyChangeTextView.setTextColor(
+            if (item.quotes[0].percentChange24h > 0)
+                context.resources.getColor(R.color.green)
+            else
+                context.resources.getColor(R.color.red)
+        )
+    }
 
-        if (item.quotes!![0].percentChange24h > 0) {
-            holder.binding.currencyChangeTextView.setTextColor(context.resources.getColor(R.color.green))
-            holder.binding.currencyChangeTextView.text = "+ ${String.format("%.02f", item.quotes[0].percentChange24h)} %"
+    private fun loadImage(imageView: ImageView, url: String) {
+        Glide.with(context)
+            .load(url)
+            .into(imageView)
+    }
 
-            holder.binding.currencyChangeTextView.setTextColor(context.resources.getColor(R.color.red))
-            holder.binding.currencyChangeTextView.text = "- ${String.format("%.02f", item.quotes[0].percentChange24h)} %"
-        }
 
+    fun updateData(dataItem: List<CryptoCurrency>) {
+        list = dataItem
+        notifyDataSetChanged()
     }
 }
