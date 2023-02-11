@@ -1,6 +1,8 @@
 package com.example.cryptoexchangeapp.fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,8 @@ import com.example.cryptoexchangeapp.models.CryptoCurrency
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -37,7 +41,7 @@ class MarketFragment : Fragment() {
         binding = FragmentMarketBinding.inflate(layoutInflater)
 
         list = listOf()
-        adapter = MarketAdapter(requireContext(), list)
+        adapter = MarketAdapter(requireContext(), list, "home")
         binding.currencyRecyclerView.adapter = adapter
 
         lifecycleScope.launch(Dispatchers.IO) {
@@ -53,10 +57,41 @@ class MarketFragment : Fragment() {
             }
         }
 
+        searchCoins()
+
         return binding.root
     }
 
+    private fun searchCoins() {
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {
+                val searchText = p0.toString().toLowerCase(Locale.getDefault())
+                updateRecyclerView(searchText)
+            }
+        })
+    }
+
+
+    private fun updateRecyclerView(searchText: String) {
+        val data = ArrayList<CryptoCurrency>()
+        for (item in list) {
+            val coinName = item.name.toLowerCase(Locale.getDefault())
+            val coinSymbol = item.symbol.toLowerCase(Locale.getDefault())
+            if (coinName.contains(searchText) || coinSymbol.contains(searchText)) {
+                data.add(item)
+            }
+        }
+
+        if (data.isNotEmpty()) {
+            adapter.updateData(data)
+        } else {
+            adapter.updateData(list)
+        }
+    }
 
 
 

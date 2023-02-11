@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptoexchangeapp.R
 import com.example.cryptoexchangeapp.databinding.CurrencyItemBinding
+import com.example.cryptoexchangeapp.fragment.HomeFragment
 import com.example.cryptoexchangeapp.models.CryptoCurrency
+import kotlin.reflect.typeOf
 
-class MarketAdapter(var context: Context, var list: List<CryptoCurrency>) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
+class MarketAdapter(var context: Context, var list: List<CryptoCurrency>, var type: String) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
 
     inner class MarketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var binding = CurrencyItemBinding.bind(view)
@@ -50,6 +52,17 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>) : Recy
             currencyChangeTextView.text = change
             currencyChangeTextView.setTextColor(changeColor)
         }
+
+//        holder.itemView.setOnClickListener {
+//            if (type == "home") {
+//                findNavController(it).navigate(
+//                    HomeFragmentDirections.actionBar
+//                )
+//            }
+//        }
+
+
+
     }
 
     private fun loadImage(imageView: ImageView, url: String) {
