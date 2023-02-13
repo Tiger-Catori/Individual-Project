@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
 
 // Firebase Auth
         initFirebase()
@@ -41,9 +41,10 @@ class LoginActivity : AppCompatActivity() {
 // Validation
         formValidation()
 
-
+// Views
         initViews()
 
+        setContentView(binding.root)
     }
 
     private fun initFirebase() {
@@ -226,6 +227,8 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
+    //
 
 }
 

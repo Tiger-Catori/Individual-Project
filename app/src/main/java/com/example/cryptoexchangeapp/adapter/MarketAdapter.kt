@@ -13,7 +13,7 @@ import com.example.cryptoexchangeapp.fragment.HomeFragment
 import com.example.cryptoexchangeapp.models.CryptoCurrency
 import kotlin.reflect.typeOf
 
-class MarketAdapter(var context: Context, var list: List<CryptoCurrency>, var type: String) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
+class MarketAdapter(var context: Context, var list: List<CryptoCurrency>/*, var type: String*/) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
 
     inner class MarketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var binding = CurrencyItemBinding.bind(view)
@@ -37,7 +37,7 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>, var ty
     override fun onBindViewHolder(holder: MarketViewHolder, position: Int) {
         val item = list[position]
         val price = "$ ${String.format("%.2f", item.quotes[0].price)}"
-        val change = "${if (item.quotes[0].percentChange24h > 0) "+" else "-"} ${String.format("%.2f", item.quotes[0].percentChange24h)} %"
+        val change = "${if (item.quotes[0].percentChange24h > 0) "+" else ""} ${String.format("%.2f", item.quotes[0].percentChange24h)} %"
         val changeColor = if (item.quotes[0].percentChange24h > 0)
             context.resources.getColor(R.color.green)
         else
@@ -47,20 +47,11 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>, var ty
             currencyNameTextView.text = item.name
             currencySymbolTextView.text = item.symbol
             loadImage(currencyImageView, "https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
-            loadImage(currencyChartImageView, "https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd${item.id}.png")
+            //loadImage(currencyChartImageView, "https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd${item.id}.png")
             currencyPriceTextView.text = price
             currencyChangeTextView.text = change
             currencyChangeTextView.setTextColor(changeColor)
         }
-
-//        holder.itemView.setOnClickListener {
-//            if (type == "home") {
-//                findNavController(it).navigate(
-//                    HomeFragmentDirections.actionBar
-//                )
-//            }
-//        }
-
 
 
     }
@@ -77,3 +68,10 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>, var ty
         notifyDataSetChanged()
     }
 }
+//        holder.itemView.setOnClickListener {
+//            if (type == "home") {
+//                findNavController(it).navigate(
+//                    HomeFragmentDirections.actionBar
+//                )
+//            }
+//        }

@@ -31,13 +31,13 @@ class ResetPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 // Inflate
         binding = ActivityResetPasswordBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         initFirebase()
         formValidation()
         resetPassword()
         initViews()
 
+        setContentView(binding.root)
     }
 
     private fun initFirebase() {

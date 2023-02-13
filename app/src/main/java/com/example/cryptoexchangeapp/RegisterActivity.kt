@@ -24,7 +24,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRegisterBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
 
 // Firebase Auth
         initFirebase()
@@ -35,6 +35,8 @@ class RegisterActivity : AppCompatActivity() {
 
 // Click
         initViews()
+
+        setContentView(binding.root)
     }
 
 

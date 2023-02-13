@@ -42,20 +42,30 @@ class TopMarketAdapter(var context: Context, val list: List<CryptoCurrency>) : R
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CryptoCurrencyViewHolder, position: Int) {
         val item = list[position]
+        holder.bind(item)
+    }
 
-        holder.binding.topCurrencyNameTextView.text = item.name
+    private fun CryptoCurrencyViewHolder.bind(item: CryptoCurrency) {
+        binding.topCurrencyNameTextView.text = item.name
+        bindImage(item)
+        bindChangeText(item)
+    }
 
+    private fun CryptoCurrencyViewHolder.bindImage(item: CryptoCurrency) {
         val imageUrl = "https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png"
         Glide.with(context)
             .load(imageUrl)
-            //.error(R.drawable.ic_placeholder) // Display a placeholder image in case of error
-            //.placeholder(R.drawable.ic_loading) // Display a loading indicator while the image is being fetched
-            .into(holder.binding.topCurrencyImageView)
-
-        val colorRes = if (item.quotes!![0].percentChange24h > 0) R.color.green else R.color.red
-        holder.binding.topCurrencyChangeTextView.setTextColor(context.resources.getColor(colorRes))
-        holder.binding.topCurrencyChangeTextView.text = "${if (item.quotes[0].percentChange24h > 0) "+" else "-"} ${item.quotes[0].percentChange24h}"
+            //.error(R.drawable.ic_placeholder)
+            //.placeholder(R.drawable.ic_loading)
+            .into(binding.topCurrencyImageView)
     }
+
+    private fun CryptoCurrencyViewHolder.bindChangeText(item: CryptoCurrency) {
+        val colorRes = if (item.quotes!![0].percentChange24h > 0) R.color.green else R.color.red
+        binding.topCurrencyChangeTextView.setTextColor(context.resources.getColor(colorRes))
+        binding.topCurrencyChangeTextView.text = "${if (item.quotes[0].percentChange24h > 0) "+" else "-"} ${item.quotes[0].percentChange24h}"
+    }
+
 
 }
 

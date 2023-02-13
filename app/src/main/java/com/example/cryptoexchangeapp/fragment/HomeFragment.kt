@@ -31,7 +31,7 @@ import kotlinx.coroutines.withContext
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var list : List<CryptoCurrency>
+    private var list : List<CryptoCurrency> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +45,8 @@ class HomeFragment : Fragment() {
         val adapter = context?.let { TopMarketAdapter(it, list) }
         recyclerView.adapter = adapter
 
-        getTopCurrencyList()
-        setTabLayout()
+//        getTopCurrencyList()
+//        setTabLayout()
 
         return binding.root
     }

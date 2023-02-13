@@ -50,13 +50,11 @@ class TopLossGainFragment : Fragment() {
                         else -> dataItem.sortedByDescending { it.quotes[0].percentChange24h }.take(10)
                     }
 
-                    binding.topGainLoseRecyclerView.adapter = MarketAdapter(requireContext(), sortedData, "home")
+                    binding.topGainLoseRecyclerView.adapter = MarketAdapter(requireContext(), sortedData)
                 }
             }
         }
     }
-
-
 
 
 }

@@ -1,14 +1,16 @@
 package com.example.cryptoexchangeapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.cryptoexchangeapp.adapter.TabPageAdapter
 import com.example.cryptoexchangeapp.databinding.ActivityHomeBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
-// import kotlinx.android.synthetic.main.activity_home.*
+//import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -18,20 +20,39 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
+
+        // setContentView(R.layout.activity_home)
+
+
+        initFirebase()
+
+        setUpTabBar()
+
+        initViews()
+
         setContentView(binding.root)
-        // setUpTabBar()
+        // recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+//        val recyclerView = findViewById<RecyclerView>(R.id.currencyRecyclerView)
+//
+//        // Set the layout manager for the RecyclerView
+//        val layoutManager = LinearLayoutManager(this)
+//        recyclerView.layoutManager = layoutManager
 
+    }
+
+    private fun initFirebase() {
         auth = FirebaseAuth.getInstance()
+    }
 
 
-
+    private fun initViews() {
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.openDrawer(binding.navigationView)
         }
 
 
         binding.navigationView.setNavigationItemSelectedListener {
-            menuItem -> menuItem.isChecked = true
+                menuItem -> menuItem.isChecked = true
             binding.drawerLayout.closeDrawer(binding.navigationView)
             true
         }
@@ -41,62 +62,36 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
 
         }
-
-        // recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
-
     }
 
-//    private fun setUpTabBar() {
-//        val adapter = TabPageAdapter(this, tabLayout.tabCount)
-//        viewPager.adapter = adapter
-//
-//        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
-//            override fun onPageSelected(position: Int) {
-//                tabLayout.selectTab(tabLayout.getTabAt(position))
-//            }
-//        })
-//
-//        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
-//            override fun onTabSelected(tab: TabLayout.Tab) {
-//                viewPager.currentItem = tab.position
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//
-//            }
-//        })
-//    }
 
+    private fun setUpTabBar()
+    {
+        val adapter = TabPageAdapter(this, binding.tabLayout.tabCount)
+        binding.viewPager.adapter = adapter
 
-}
-
-/*
-
-fun EditText.getTextString(): String {
-        this.text.toString()
-    }
-
-fun changeToolbarFont(toolbar: Toolbar, context: Activity) {
-    for (i in 0 until toolbar.getChildCount()) {
-        val view: View = toolbar.getChildAt(i)
-        if (view is TextView) {
-            val tv: TextView = view as TextView
-            if (tv.getText().equals(toolbar.getTitle())) {
-                applyFont(tv, context)
-                break
+        binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback()
+        {
+            override fun onPageSelected(position: Int) {
+                binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
             }
-        }
+        })
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener
+        {
+            override fun onTabSelected(tab: TabLayout.Tab)
+            {
+                binding.viewPager.currentItem = tab.position
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
     }
-}
-
-fun applyFont(tv: TextView, context: Activity) {
-    tv.setTypeface(Typeface.createFromAsset(context.getAssets(), "../res/@font/montserrat"))
 
 }
 
-changeToolbarFont(findViewById(R.id.app_bar), this);
-*/
+
+
+

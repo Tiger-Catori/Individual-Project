@@ -15,10 +15,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
 
         initFirebase()
         initViews()
+
+        setContentView(binding.root)
     }
 
     private fun initFirebase() {

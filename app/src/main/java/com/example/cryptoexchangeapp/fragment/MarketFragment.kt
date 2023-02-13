@@ -1,5 +1,6 @@
 package com.example.cryptoexchangeapp.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,8 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoexchangeapp.R
 import com.example.cryptoexchangeapp.adapter.MarketAdapter
+import com.example.cryptoexchangeapp.adapter.TopMarketAdapter
 import com.example.cryptoexchangeapp.apis.ApiInterface
 import com.example.cryptoexchangeapp.apis.ApiUtilities
 import com.example.cryptoexchangeapp.databinding.FragmentMarketBinding
@@ -29,9 +33,10 @@ class MarketFragment : Fragment() {
 
     private lateinit var binding: FragmentMarketBinding
 
-    private lateinit var list: List<CryptoCurrency>
+    private val list = mutableListOf<CryptoCurrency>()
     private lateinit var adapter: MarketAdapter
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,59 +45,64 @@ class MarketFragment : Fragment() {
         // inflate the layout for this fragment
         binding = FragmentMarketBinding.inflate(layoutInflater)
 
-        list = listOf()
-        adapter = MarketAdapter(requireContext(), list, "home")
+        adapter = MarketAdapter(requireContext(), list)
         binding.currencyRecyclerView.adapter = adapter
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val res = ApiUtilities.getInstance().create(ApiInterface::class.java).getMarketData()
+        lifecycleScope.launch {
+            val res = withContext(Dispatchers.IO) {
+                ApiUtilities.getInstance().create(ApiInterface::class.java).getMarketData()
+            }
 
             if (res.body() != null) {
                 withContext(Dispatchers.Main) {
-                    list = res.body()!!.data.cryptoCurrencyList
-                    adapter.updateData(list)
+                    list.clear()
+                    list.addAll(res.body()!!.data.cryptoCurrencyList)
+                    adapter.notifyDataSetChanged()
                 }
-            } else {
-
             }
         }
 
-        searchCoins()
+         searchCoins()
+//
+//        val recyclerView = binding.currencyRecyclerView
+//        recyclerView.layoutManager = LinearLayoutManager(context)
+//        val adapter = context?.let { MarketAdapter(it, list) }
+//        recyclerView.adapter = adapter
+
+        val recyclerView = binding.currencyRecyclerView
+        // Set the layout manager for the RecyclerView
+        val layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = layoutManager
 
         return binding.root
     }
 
     private fun searchCoins() {
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun afterTextChanged(p0: Editable?) {
-                val searchText = p0.toString().toLowerCase(Locale.getDefault())
-                updateRecyclerView(searchText)
-            }
-        })
+        binding.etSearch.addTextChangedListener(searchTextWatcher)
     }
 
+    private val searchTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        override fun afterTextChanged(p0: Editable?) {
+            val searchText = p0.toString().toLowerCase(Locale.getDefault())
+            updateRecyclerView(searchText)
+        }
+    }
 
     private fun updateRecyclerView(searchText: String) {
-        val data = ArrayList<CryptoCurrency>()
-        for (item in list) {
-            val coinName = item.name.toLowerCase(Locale.getDefault())
-            val coinSymbol = item.symbol.toLowerCase(Locale.getDefault())
-            if (coinName.contains(searchText) || coinSymbol.contains(searchText)) {
-                data.add(item)
-            }
+        val filteredData = list.filter {
+            val coinName = it.name.toLowerCase(Locale.getDefault())
+            val coinSymbol = it.symbol.toLowerCase(Locale.getDefault())
+            coinName.contains(searchText) || coinSymbol.contains(searchText)
         }
 
-        if (data.isNotEmpty()) {
-            adapter.updateData(data)
-        } else {
-            adapter.updateData(list)
-        }
+        adapter.updateData(if (filteredData.isNotEmpty()) filteredData else list)
     }
-
 
 
 }
+
+
