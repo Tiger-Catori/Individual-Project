@@ -28,7 +28,7 @@ class TopLossGainFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentTradesBinding.inflate(layoutInflater)
 
-        getMarketData()
+        // getMarketData()
 
         return binding.root
     }
@@ -37,24 +37,24 @@ class TopLossGainFragment : Fragment() {
      * The getMarketData method retrieves market data from an API
      * and displays it in the form of a list.
      */
-    private fun getMarketData() {
-        val position = requireArguments().getInt("position")
-        lifecycleScope.launch(Dispatchers.IO) {
-            val res = ApiUtilities.getInstance().create(ApiInterface::class.java).getMarketData()
-
-            if (res.body() != null) {
-                withContext(Dispatchers.Main) {
-                    val dataItem = res.body()!!.data.cryptoCurrencyList
-                    val sortedData = when (position) {
-                        0 -> dataItem.sortedBy { it.quotes[0].percentChange24h }.reversed().take(10)
-                        else -> dataItem.sortedByDescending { it.quotes[0].percentChange24h }.take(10)
-                    }
-
-                    binding.topGainLoseRecyclerView.adapter = MarketAdapter(requireContext(), sortedData)
-                }
-            }
-        }
-    }
+//    private fun getMarketData() {
+//        val position = requireArguments().getInt("position")
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            val res = ApiUtilities.getInstance().create(ApiInterface::class.java).getMarketData()
+//
+//            if (res.body() != null) {
+//                withContext(Dispatchers.Main) {
+//                    val dataItem = res.body()!!.data.cryptoCurrencyList
+//                    val sortedData = when (position) {
+//                        0 -> dataItem.sortedBy { it.quotes[0].percentChange24h }.reversed().take(10)
+//                        else -> dataItem.sortedByDescending { it.quotes[0].percentChange24h }.take(10)
+//                    }
+//
+//                    binding.topGainLoseRecyclerView.adapter = MarketAdapter(requireContext(), sortedData)
+//                }
+//            }
+//        }
+//    }
 
 
 }

@@ -36,7 +36,7 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>/*, var 
      */
     override fun onBindViewHolder(holder: MarketViewHolder, position: Int) {
         val item = list[position]
-        val price = "$ ${String.format("%.2f", item.quotes[0].price)}"
+        val price = "$${String.format("%.2f", item.quotes[0].price)}"
         val change = "${if (item.quotes[0].percentChange24h > 0) "+" else ""} ${String.format("%.2f", item.quotes[0].percentChange24h)} %"
         val changeColor = if (item.quotes[0].percentChange24h > 0)
             context.resources.getColor(R.color.green)
@@ -47,7 +47,7 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>/*, var 
             currencyNameTextView.text = item.name
             currencySymbolTextView.text = item.symbol
             loadImage(currencyImageView, "https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
-            //loadImage(currencyChartImageView, "https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd${item.id}.png")
+            loadImage(currencyChartImageView, "https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${item.id}.png")
             currencyPriceTextView.text = price
             currencyChangeTextView.text = change
             currencyChangeTextView.setTextColor(changeColor)

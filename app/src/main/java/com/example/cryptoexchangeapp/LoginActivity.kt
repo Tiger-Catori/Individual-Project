@@ -125,12 +125,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-      private fun loginGoogle() {
+    private fun loginGoogle() {
           val signInIntent = googleLogin.signInIntent
           launcher.launch(signInIntent)
       }
 
-      private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
           result ->
                     if (result.resultCode == Activity.RESULT_OK) {
                         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
@@ -155,6 +155,7 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
         }
     }
+
 
 
 
