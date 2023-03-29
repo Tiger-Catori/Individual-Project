@@ -29,12 +29,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         binding.btnLogin.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            navigateTo(LoginActivity::class.java)
         }
 
         binding.btnRegister.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            navigateTo(RegisterActivity::class.java)
         }
+    }
+
+    /**
+     * Navigate to the specified activity.
+     * @param destinationActivity The destination activity class.
+     */
+    private fun navigateTo(destinationActivity: Class<*>) {
+        startActivity(Intent(this, destinationActivity))
     }
 
 
@@ -52,10 +60,18 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val mainIntent = Intent(this, MainActivity::class.java)
-            mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(mainIntent)
+            navigateToMainActivity()
         }
+    }
+
+    /**
+     * Navigate to the MainActivity and set flags to clear the activity stack.
+     * This ensures that users cannot navigate back to the login screen if they have already logged in.
+     */
+    private fun navigateToMainActivity() {
+        val mainIntent = Intent(this, MainActivity::class.java)
+        mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(mainIntent)
     }
 
 }

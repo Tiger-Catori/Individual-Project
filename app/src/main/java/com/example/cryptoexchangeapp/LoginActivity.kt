@@ -3,11 +3,13 @@ package com.example.cryptoexchangeapp
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.hardware.biometrics.BiometricManager
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import com.example.cryptoexchangeapp.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -21,14 +23,14 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.android.plugins.RxAndroidPlugins
 
-const val REQUEST_CODE_SIGN_IN = 0
-
 @SuppressLint("CheckResult")
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var googleLogin: GoogleSignInClient
+    // private lateinit var biometricAuthenticator: BiometricAuthenticator
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,77 +55,94 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun formValidation() {
-
-// Username Validation
+        // Username Validation
         val usernameStream = RxTextView.textChanges(binding.etEmail)
             .skipInitialValue()
             .map { username ->
-                username.isEmpty()
+                username.isNotBlank()
             }
-        usernameStream.subscribe {
-            showTextMinimalAlert(it, "Email/Username")
-        }
 
-
-// Password Validation
+        // Password Validation
         val passwordStream = RxTextView.textChanges(binding.etPassword)
             .skipInitialValue()
             .map { password ->
-                password.isEmpty()
+                password.isNotBlank()
             }
-        passwordStream.subscribe {
-            showTextMinimalAlert(it, "Password")
+
+        // Button Enable True or False
+        val validFormStream = Observable.combineLatest(
+            usernameStream, passwordStream
+        ) { usernameValid, passwordValid ->
+            usernameValid && passwordValid
         }
 
-// Button Enable True or False.
-        val invalidFieldStream = Observable.combineLatest(
-            usernameStream, passwordStream
-        ) { usernameInvalid, passwordInvalid ->
-            !usernameInvalid && !passwordInvalid
+        validFormStream.subscribe { isValid ->
+            updateLoginButton(isValid)
         }
-        invalidFieldStream.subscribe { isValid ->
-            binding.btnLogin.isEnabled = isValid
-            binding.btnLogin.backgroundTintList = if (isValid) {
-                ContextCompat.getColorStateList(this, R.color.primary_color)
-            } else {
-                ContextCompat.getColorStateList(this, android.R.color.darker_gray)
-            }
+
+        // Show minimal alerts for invalid input fields
+        usernameStream.subscribe { isValid ->
+            showTextMinimalAlert(!isValid, "Email/Username")
+        }
+
+        passwordStream.subscribe { isValid ->
+            showTextMinimalAlert(!isValid, "Password")
+        }
+    }
+
+    private fun updateLoginButton(isValid: Boolean) {
+        binding.btnLogin.apply {
+            isEnabled = isValid
+            backgroundTintList = ContextCompat.getColorStateList(
+                this@LoginActivity,
+                if (isValid) R.color.primary_color else android.R.color.darker_gray
+            )
         }
     }
 
 
     private fun initViews() {
-// Login Button
-        binding.btnLogin.setOnClickListener{
+        setupLoginButton()
+        setupGoogleLoginButton()
+        setupRegisterButton()
+        setupForgotPasswordButton()
+    }
+
+    // Login Button
+    private fun setupLoginButton() {
+        binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
             loginUser(email, password)
         }
+    }
 
-// Login With Google Button
+    // Login With Google Button
+    private fun setupGoogleLoginButton() {
         binding.btnLoginGoogle.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.webclient_id))
                 .requestEmail()
-                //.requestProfile() R.string.webclient_id
                 .build()
             googleLogin = GoogleSignIn.getClient(this, gso)
-            //   findViewById<Button>(R.id.btn_login_google).setOnClickListener {
             loginGoogle()
-            // }
         }
+    }
 
-
-// No account Register Button
-        binding.tvHaventAccount.setOnClickListener{
+    // No account Register Button
+    private fun setupRegisterButton() {
+        binding.tvHaventAccount.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+    }
 
-// Forgotten Password Button
+    // Forgotten Password Button
+    private fun setupForgotPasswordButton() {
         binding.tvForgotPw.setOnClickListener {
             startActivity(Intent(this, ResetPasswordActivity::class.java))
         }
     }
+
 
     private fun loginGoogle() {
           val signInIntent = googleLogin.signInIntent
@@ -145,18 +164,16 @@ class LoginActivity : AppCompatActivity() {
      *  @param task which represents the task to be executed.
      */
     private fun manageResults(task: Task<GoogleSignInAccount>?) {
-        if (task == null) return
-
-        if (task.isSuccessful) {
+        if (task?.isSuccessful == true) {
             task.result?.let { account ->
                 updateUserInterface(account)
             }
         } else {
-            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
+            task?.exception?.message?.let { message ->
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
-
-
 
 
     /**
@@ -177,7 +194,9 @@ class LoginActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 startActivity(Intent(this, HomeActivity::class.java))
             } else {
-                Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
+                task.exception?.message?.let { message ->
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -191,9 +210,10 @@ class LoginActivity : AppCompatActivity() {
      * @param isNotValid A boolean value that indicates whether the input text is invalid or not.
      * @param text A string value that specifies which text input field the error message belongs to
      */
-    private fun showTextMinimalAlert(isNotValid: Boolean, text: String) {
-        val errorMessage = "$text must be more than ${if (text == "Email/Username") 6 else 8} characters"
-        when (text) {
+    private fun showTextMinimalAlert(isNotValid: Boolean, fieldName: String) {
+        val requiredCharacters = if (fieldName == "Email/Username") 6 else 8
+        val errorMessage = "$fieldName must be more than $requiredCharacters characters"
+        when (fieldName) {
             "Email/Username" -> binding.etEmail.error = if (isNotValid) errorMessage else null
             "Password" -> binding.etPassword.error = if (isNotValid) errorMessage else null
         }
@@ -216,20 +236,23 @@ class LoginActivity : AppCompatActivity() {
      * If the sign-in was not successful, the method displays a toast message with
      * the error message stored in the message property of the exception object of the login object.
      */
+
     private fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { loginTask ->
             if (loginTask.isSuccessful) {
-                startActivity(Intent(this, HomeActivity::class.java).apply {
+                val intent = Intent(this, HomeActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                })
+                }
+                startActivity(intent)
                 Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, loginTask.exception?.message, Toast.LENGTH_SHORT).show()
+                loginTask.exception?.message?.let { message ->
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
-    //
 
 }
 

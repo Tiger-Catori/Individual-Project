@@ -1,6 +1,7 @@
 package com.example.cryptoexchangeapp.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoexchangeapp.R
@@ -22,6 +24,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import androidx.navigation.fragment.findNavController
+// import com.example.cryptoexchangeapp.MarketFragmentDirections
 import kotlin.collections.ArrayList
 
 /**
@@ -29,7 +33,7 @@ import kotlin.collections.ArrayList
  * Use the [MarketFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MarketFragment : Fragment() {
+class MarketFragment : Fragment(), MarketAdapter.OnItemClickListener {
 
     private lateinit var binding: FragmentMarketBinding
 
@@ -45,7 +49,7 @@ class MarketFragment : Fragment() {
         // inflate the layout for this fragment
         binding = FragmentMarketBinding.inflate(layoutInflater)
 
-        adapter = MarketAdapter(requireContext(), list)
+        adapter = MarketAdapter(requireContext(), list, this::onItemClick)
         binding.currencyRecyclerView.adapter = adapter
 
         lifecycleScope.launch {
@@ -62,6 +66,8 @@ class MarketFragment : Fragment() {
             }
         }
 
+
+
          searchCoins()
 //
 //        val recyclerView = binding.currencyRecyclerView
@@ -75,6 +81,8 @@ class MarketFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
 
         return binding.root
+
+
     }
 
     private fun searchCoins() {
@@ -100,6 +108,15 @@ class MarketFragment : Fragment() {
         }
 
         adapter.updateData(if (filteredData.isNotEmpty()) filteredData else list)
+    }
+
+
+    override fun onItemClick(cryptoCurrency: CryptoCurrency) {
+        // Create a NavDirections object with the necessary arguments
+        val action = MarketFragmentDirections.actionMarketFragmentToDetailsFragment(cryptoCurrency)
+
+        // Navigate to the DetailsFragment using the NavController
+        view?.findNavController()?.navigate(action)
     }
 
 

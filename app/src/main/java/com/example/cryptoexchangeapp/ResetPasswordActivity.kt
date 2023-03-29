@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Patterns
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.cryptoexchangeapp.databinding.ActivityResetPasswordBinding
@@ -45,15 +44,22 @@ class ResetPasswordActivity : AppCompatActivity() {
     }
 
     private fun formValidation() {
-        //  Email Validation with RxTextView
+        // Email validation using RxTextView
         val emailStream = RxTextView.textChanges(binding.etEmail)
             .skipInitialValue()
-            .map { email ->
-                !Patterns.EMAIL_ADDRESS.matcher(email).matches()
-            }
-        emailStream.subscribe{
-            showInvalidEmailAlert(it)
+            .map { email -> !isValidEmail(email) }
+
+        emailStream.subscribe { isInvalid ->
+            displayInvalidEmailAlert(isInvalid)
         }
+    }
+
+    /**
+        This function checks if the given CharSequence is a
+        valid email address using Android's built-in email address pattern.
+     */
+    private fun isValidEmail(email: CharSequence): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
 
@@ -65,21 +71,29 @@ class ResetPasswordActivity : AppCompatActivity() {
         binding.btnResetPw.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             if (email.isNotEmpty()) {
-                auth.sendPasswordResetEmail(email)
-                    .addOnCompleteListener(this) { resetTask ->
-                        if (resetTask.isSuccessful) {
-                            Intent(this, LoginActivity::class.java).also {
-                                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                startActivity(it)
-                                showToast("Password reset email sent, please check your inbox.")
-                            }
-                        } else {
-                            showToast("Error: ${resetTask.exception?.localizedMessage}")
-                        }
-                    }
+                sendResetPasswordEmail(email)
             } else {
                 showToast("Please enter your email")
             }
+        }
+    }
+
+    private fun sendResetPasswordEmail(email: String) {
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener(this) { resetTask ->
+                if (resetTask.isSuccessful) {
+                    navigateToLoginActivity()
+                    showToast("Password reset email sent, please check your inbox.")
+                } else {
+                    showToast("Error: ${resetTask.exception?.localizedMessage}")
+                }
+            }
+    }
+
+    private fun navigateToLoginActivity() {
+        Intent(this, LoginActivity::class.java).also {
+            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(it)
         }
     }
 
@@ -87,9 +101,8 @@ class ResetPasswordActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-
     private fun initViews() {
-        //  Click
+        // Click listener
         binding.tvBackLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
@@ -109,13 +122,19 @@ class ResetPasswordActivity : AppCompatActivity() {
      * background color is changed to the primary color of the app.
      * In this case red.
      */
-    private fun showInvalidEmailAlert(isNotValid: Boolean) {
-        binding.etEmail.error = if (isNotValid) "Email not valid!" else null
-        binding.btnResetPw.isEnabled = !isNotValid
-        binding.btnResetPw.backgroundTintList = ContextCompat.getColorStateList(
-            this,
-            if (isNotValid) android.R.color.darker_gray else R.color.primary_color
-        )
+    private fun displayInvalidEmailAlert(isInvalid: Boolean) {
+        binding.etEmail.error = if (isInvalid) "Email not valid!" else null
+        updateResetPasswordButtonState(!isInvalid)
     }
+
+    private fun updateResetPasswordButtonState(isEnabled: Boolean) {
+        binding.btnResetPw.apply {
+            backgroundTintList = ContextCompat.getColorStateList(
+                this@ResetPasswordActivity,
+                if (!isEnabled) android.R.color.darker_gray else R.color.primary_color
+            )
+        }
+    }
+
 
 }

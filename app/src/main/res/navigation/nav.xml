@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/marketFragment">
+
+    <fragment
+        android:id="@+id/marketFragment"
+        android:name="com.example.cryptoexchangeapp.fragment.MarketFragment"
+        android:label="MarketFragment">
+        <action
+            android:id="@+id/action_marketFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment">
+            <argument
+                android:name="cryptoCurrency"
+                app:argType="com.example.cryptoexchangeapp.models.CryptoCurrency"
+                app:nullable="true" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.cryptoexchangeapp.fragment.DetailsFragment"
+        android:label="DetailsFragment">
+        <argument
+            android:name="cryptoCurrency"
+            app:argType="com.example.cryptoexchangeapp.models.CryptoCurrency"
+            app:nullable="true" />
+    </fragment>
+
+</navigation>
+
+
+    <!--tools:layout="@layout/fragment_details">-->

@@ -13,10 +13,16 @@ import com.example.cryptoexchangeapp.fragment.HomeFragment
 import com.example.cryptoexchangeapp.models.CryptoCurrency
 import kotlin.reflect.typeOf
 
-class MarketAdapter(var context: Context, var list: List<CryptoCurrency>/*, var type: String*/) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
+class MarketAdapter(var context: Context, var list: List<CryptoCurrency>, private val onItemClick: (CryptoCurrency) -> Unit) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(cryptoCurrency: CryptoCurrency)
+    }
 
     inner class MarketViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var binding = CurrencyItemBinding.bind(view)
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarketViewHolder {
@@ -47,12 +53,14 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>/*, var 
             currencyNameTextView.text = item.name
             currencySymbolTextView.text = item.symbol
             loadImage(currencyImageView, "https://s2.coinmarketcap.com/static/img/coins/64x64/${item.id}.png")
-            loadImage(currencyChartImageView, "https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${item.id}.png")
+            // loadImage(currencyChartImageView, "https://s3.coinmarketcap.com/generated/sparklines/web/7d/usd/${item.id}.png")
             currencyPriceTextView.text = price
             currencyChangeTextView.text = change
             currencyChangeTextView.setTextColor(changeColor)
         }
-
+        holder.itemView.setOnClickListener {
+            onItemClick(list[position])
+        }
 
     }
 
@@ -68,10 +76,3 @@ class MarketAdapter(var context: Context, var list: List<CryptoCurrency>/*, var 
         notifyDataSetChanged()
     }
 }
-//        holder.itemView.setOnClickListener {
-//            if (type == "home") {
-//                findNavController(it).navigate(
-//                    HomeFragmentDirections.actionBar
-//                )
-//            }
-//        }

@@ -20,6 +20,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="false">
 
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
@@ -112,9 +113,6 @@
                 android:text=""/>
 
 
-
-
-
         </com.google.android.material.tabs.TabLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -131,7 +129,7 @@
         app:itemIconTint="@color/white"
         android:fontFamily="@font/montserrat"
         android:layout_marginLeft="-64dp"
-        android:paddingLeft="0dp"
+        android:paddingStart="0dp"
         >
 
         <androidx.appcompat.widget.AppCompatButton

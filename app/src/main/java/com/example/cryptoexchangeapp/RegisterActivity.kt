@@ -98,8 +98,9 @@ class RegisterActivity : AppCompatActivity() {
 
 
 
+
     private fun initViews() {
-        binding.btnRegister.setOnClickListener{
+        binding.btnRegister.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
             registerUser(email, password)
@@ -110,20 +111,10 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-// Error Alerts
     private fun showNameExistAlert(isNotValid: Boolean) {
         binding.etFullname.error = if (isNotValid) getString(R.string.error_name_empty) else null
     }
 
-
-    /**
-     * This method takes in
-     * @param isNotValid
-     * @param text
-     * The purpose of the method is to show an error message
-     * for either the username or password text field if the
-     * input text is not valid, and remove the error message if the input text is valid.
-     */
     private fun showTextMinimalAlert(isNotValid: Boolean, text: String) {
         val errorMessage = when (text) {
             "Username" -> if (isNotValid) "$text must be more than 6 characters" else null
@@ -145,22 +136,12 @@ class RegisterActivity : AppCompatActivity() {
         binding.etConfirmPassword.error = if (isNotValid) getString(R.string.error_passwords_not_match) else null
     }
 
-    /**
-     * The regiserUser is used to create a new user account with,
-     * @param email &
-     * @param password
-     * It uses the createUserWithEmailAndPassword method from the Firebase Authentication
-     * (auth) instance. If the account creation is successful,
-     * it starts the LoginActivity and shows a toast message with
-     * "Registration Successful". If the account creation is not successful,
-     * it shows a default message of "Unknown error occurred".
-     */
     private fun registerUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) {task ->
+            .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     startActivity(Intent(this, LoginActivity::class.java))
-                    Toast.makeText(this, "Registration Successful",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show()
                 } else {
                     val errorMessage = task.exception?.message ?: "Unknown error occurred"
                     Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()

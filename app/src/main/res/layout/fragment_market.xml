@@ -6,44 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.MarketFragment"
     android:background="@color/black"
-    android:padding="20dp">
-
-
-
-    <com.google.android.material.textfield.TextInputLayout
-       android:id="@+id/til_search"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="0dp"
-       android:hint=""
-       style="@style/TextInputLayout"
-       app:startIconDrawable="@drawable/baseline_search_24"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="parent"
-       >
-
-       <com.google.android.material.textfield.TextInputEditText
-           android:padding="10dp"
-           android:id="@+id/et_search"
-           style="@style/TextInputEditText"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:textColor="@color/black" />
-
-   </com.google.android.material.textfield.TextInputLayout>
-
-<!--        <ScrollView-->
-<!--          android:layout_width="match_parent"-->
-<!--          android:layout_height="wrap_content"-->
-<!--          android:layout_gravity="center"-->
-<!--          android:layout_marginTop="12dp"-->
-<!--          android:fillViewport="true"-->
-<!--          app:layout_constraintBottom_toBottomOf="parent"-->
-<!--          app:layout_constraintEnd_toEndOf="parent"-->
-<!--          app:layout_constraintStart_toStartOf="parent"-->
-<!--          app:layout_constraintTop_toBottomOf='@+id/til_search'-->
-<!--          app:layout_constraintVertical_bias="0.411">-->
+    >
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -53,6 +16,7 @@
         android:layout_gravity="center"
         android:background="@color/black"
         android:orientation="vertical"
+        android:padding="20dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,6 +26,37 @@
         app:layout_constraintVertical_bias="0.984"
         tools:listitem="@layout/currency_item" />
 
-    <!--        </ScrollView>-->
+    <View
+        android:id="@+id/indicator_strip"
+        android:layout_width="6dp"
+        android:layout_height="0dp"
+        android:background="@color/primary_color"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:hint=""
+        style="@style/TextInputLayout"
+        app:startIconDrawable="@drawable/baseline_search_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="20dp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:padding="10dp"
+            android:id="@+id/et_search"
+            style="@style/TextInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
    </androidx.constraintlayout.widget.ConstraintLayout>

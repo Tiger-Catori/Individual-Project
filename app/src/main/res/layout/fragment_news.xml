@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.NewsFragment"
-    android:background="@color/primary_color">
-
+    android:background="@color/black">
+    <!-- Add this View inside ConstraintLayout -->
+    <View
+        android:id="@+id/indicator_strip"
+        android:layout_width="6dp"
+        android:layout_height="0dp"
+        android:background="@color/primary_color"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="News Fragment"
-        android:textSize="30sp"
-        android:textAlignment="center"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat"
         android:gravity="center"
+        android:text="News Fragment"
+        android:textAlignment="center"
         android:textColor="@color/white"
-        />
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

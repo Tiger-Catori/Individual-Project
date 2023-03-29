@@ -4,13 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.cryptoexchangeapp.adapter.TabPageAdapter
 import com.example.cryptoexchangeapp.databinding.ActivityHomeBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
-//import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -20,24 +18,11 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
-
-        // setContentView(R.layout.activity_home)
-
+        setContentView(binding.root)
 
         initFirebase()
-
-        setUpTabBar()
-
         initViews()
-
-        setContentView(binding.root)
-        // recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
-//        val recyclerView = findViewById<RecyclerView>(R.id.currencyRecyclerView)
-//
-//        // Set the layout manager for the RecyclerView
-//        val layoutManager = LinearLayoutManager(this)
-//        recyclerView.layoutManager = layoutManager
-
+        setUpTabBar()
     }
 
     private fun initFirebase() {
@@ -46,41 +31,39 @@ class HomeActivity : AppCompatActivity() {
 
 
     private fun initViews() {
-        binding.topAppBar.setNavigationOnClickListener {
-            binding.drawerLayout.openDrawer(binding.navigationView)
-        }
+        with(binding) {
+            topAppBar.setNavigationOnClickListener {
+                drawerLayout.openDrawer(navigationView)
+            }
 
+            navigationView.setNavigationItemSelectedListener { menuItem ->
+                menuItem.isChecked = true
+                drawerLayout.closeDrawer(navigationView)
+                true
+            }
 
-        binding.navigationView.setNavigationItemSelectedListener {
-                menuItem -> menuItem.isChecked = true
-            binding.drawerLayout.closeDrawer(binding.navigationView)
-            true
-        }
-
-        binding.btnLogout.setOnClickListener {
-            auth.signOut()
-            startActivity(Intent(this, LoginActivity::class.java))
-
+            btnLogout.setOnClickListener {
+                auth.signOut()
+                startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
+            }
         }
     }
 
 
-    private fun setUpTabBar()
-    {
+    private fun setUpTabBar() {
         val adapter = TabPageAdapter(this, binding.tabLayout.tabCount)
         binding.viewPager.adapter = adapter
 
-        binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback()
-        {
+        // Synchronize ViewPager2 page changes with TabLayout
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
+                binding.tabLayout.getTabAt(position)?.select()
             }
         })
 
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener
-        {
-            override fun onTabSelected(tab: TabLayout.Tab)
-            {
+        // Synchronize TabLayout tab selection with ViewPager2
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
                 binding.viewPager.currentItem = tab.position
             }
 
@@ -89,6 +72,7 @@ class HomeActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
+
 
 }
 

@@ -1,4 +1,6 @@
 package com.example.cryptoexchangeapp.models
+import android.os.Bundle
+import java.io.Serializable
 
 data class CryptoCurrency(
     val auditInfoList: List<AuditInfo>,
@@ -18,5 +20,18 @@ data class CryptoCurrency(
     val slug: String,
     val symbol: String,
     val tags: List<String>,
-    val totalSupply: Double
-)
+    val totalSupply: Double,
+    // val price: Bundle?
+) : Serializable {
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other)
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
+
+    override fun toString(): String {
+        return super.toString()
+    }
+}

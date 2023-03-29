@@ -27,6 +27,22 @@ class MainActivity {
     onStart()
 }
 
+
+class ResetPasswordActivity {
+
+    ActivityMainBinding binding
+    FirebaseAuth auth
+
+    onCreate()
+    initFirebase()
+    initViews()
+    formValidation()
+    resetPassword()
+    showToast()
+    showInvalidEmailAlert()
+
+}
+
 class LoginActivity {
 
     ActivityMainBinding binding
@@ -62,22 +78,6 @@ class RegisterActivity {
     showValidEmailAlert()
     showPasswordConfirmAlert()
     registerUser()
-}
-
-
-class ResetPasswordActivity {
-
-    ActivityMainBinding binding
-    FirebaseAuth auth
-
-    onCreate()
-    initFirebase()
-    initViews()
-    formValidation()
-    resetPassword()
-    showToast()
-    showInvalidEmailAlert()
-
 }
 
 

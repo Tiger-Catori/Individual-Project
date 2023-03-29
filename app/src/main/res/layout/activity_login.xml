@@ -88,6 +88,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf='@+id/til_password' />
 
+<!--
+    <ImageButton
+        android:id="@+id/btn_fingerprint"
+        style="@style/ButtonRed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="12dp"
+        android:padding="10dp"
+        android:src="@drawable/baseline_fingerprint_24"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login_google"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_forgot_pw" />
+
+    -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_login_google"
         style="@style/ButtonRed"

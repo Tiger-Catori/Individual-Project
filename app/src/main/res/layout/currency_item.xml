@@ -75,10 +75,11 @@
             app:layout_constraintTop_toBottomOf="@+id/currencyNameTextView"
             tools:text="BTC" />
 
-        <ImageView
+        <!--
+                <ImageView
             android:id="@+id/currencyChartImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="120dp"
+            android:layout_width="200dp"
+            android:layout_height="70dp"
             android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -86,6 +87,9 @@
             app:layout_constraintTop_toTopOf="@id/currencyChangeTextView"
             app:layout_constraintVertical_bias=".0"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        -->
+
+
 
         <TextView
             android:id="@+id/currencyPriceTextView"
@@ -110,7 +114,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/currencyChangeTextView"
             app:layout_constraintEnd_toStartOf="@+id/currencyChangeTextView"
             app:layout_constraintTop_toTopOf="@+id/currencyChangeTextView"
-            tools:srcCompat="@drawable/baseline_arrow_drop_up_24" />
+            tools:srcCompat="@drawable/ic_caret_up" />
 
         <TextView
             android:id="@+id/currencyChangeTextView"

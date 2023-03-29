@@ -82,5 +82,12 @@
     <string name="error_passwords_not_match">The passwords are not the same</string>
     <string name="error_email_not_valid">Email not valid</string>
     <string name="error_name_empty">Name cannot be empty</string>
+    <string name="biometric_not_available">No Fingerprint Scanner</string>
+    <string name="_1h">1 Hour</string>
+    <string name="_15m">15 min</string>
+    <string name="_1m">1 min</string>
+    <string name="_1w">1 Week</string>
+    <string name="_1d">1 Day</string>
+    <string name="_4h">4 Hour</string>
 
 </resources>
