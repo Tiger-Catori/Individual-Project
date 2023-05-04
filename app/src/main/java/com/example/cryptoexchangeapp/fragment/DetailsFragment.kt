@@ -60,7 +60,7 @@ class DetailsFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         return binding.root
     }
-fun fetchData(item: CryptoCurrency, timePeriod: TimePeriod){
+private fun fetchData(item: CryptoCurrency, timePeriod: TimePeriod){
     lifecycleScope.launch {
         val res = withContext(Dispatchers.IO) {
             ApiUtilities.getInstanceCoinranking().create(ApiInterface::class.java).getCoinDetail(item.coinUUID,timePeriod.param)
@@ -125,45 +125,9 @@ fun fetchData(item: CryptoCurrency, timePeriod: TimePeriod){
     }
 
 
-    // Load the chart for the given CryptoCurrency item
-/*    private fun loadChart(item: CryptoCurrency) {
-        // Enable JavaScript and set layer type for the WebView
-        binding.detailChartWebView.settings.javaScriptEnabled = true
-        binding.detailChartWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-
-        // Construct the URL for the TradingView chart
-        //val itemSymbol = "BTC"
-        //val timeInterval = "1D"
-
-        val chartUrl = "https://s.tradingview.com/widgetembed?" +
-                "symbol=${item}USD&" +
-                "interval=1D&" +
-                "hidesidetoolbar=1&" +
-                "hidetoptoolbar=1&" +
-                "symboledit=1&" +
-                "saveimage=1&" +
-                "toolbarbg=F1F3F6&" +
-                "studies=[]&" +
-                "hideideas=1&" +
-                "theme=Dark&" +
-                "style=1&" +
-                "timezone=Etc%2FUTC&" +
-                "studies_overrides={}&" +
-                "overrides={}&" +
-                "enabled_features=[]&" +
-                "disabled_features=[]&" +
-                "locale=en&" +
-                "utm_source=coinmarketcap.com&" +
-                "utm_medium=widget&" +
-                "utm_campaign=chart&" +
-                "utm_term=BTCUSDT"
-
-        // Load the TradingView chart in the WebView
-        binding.detailChartWebView.loadUrl(chartUrl)
-    }*/
-
-
-    // Set up the details of the CryptoCurrency data object
+    /**
+     *  Responsible for setting up the UI of the DetailsActivity with the given CryptoCurrency data.
+     */
     private fun setUpDetails(data: CryptoCurrency) {    val url = "https://s2.coinmarketcap.com/static/img/coins/64x64/${data.id}.png"
 
         // Set the symbol text
@@ -192,6 +156,7 @@ fun fetchData(item: CryptoCurrency, timePeriod: TimePeriod){
         }
         binding.detailChangeTextView.text = String.format("%.02f", percentChange24h)
     }
+
     private fun setUpLineChart() {
         binding.lineChart.apply {
             setDrawBorders(false)
@@ -213,17 +178,12 @@ fun fetchData(item: CryptoCurrency, timePeriod: TimePeriod){
     private  val LEFT_PARENTHESES = " ("
     private  val ANALYTICS_SEPARATOR = " - "
     private  val LINE_WIDTH = 2F
-    fun setUpLineChartData(coin: Coin) {
-        /*var entries:List<Entry> = listOf()
-        coin.sparkline?.forEachIndexed { index, sparkLine ->
-            sparkLine?.let {
-                try {
-                    Entry(index.toFloat(), sparkLine.toFloat())
-                } catch (e: Exception) {
 
-                }
-            }
-        }*/
+    /**
+     * Sets up line chart
+     * */
+    private fun setUpLineChartData(coin: Coin) {
+
         val entries = coin.sparkline.mapIndexed { index, sparkLine ->
             try {
                 Entry(index.toFloat(), sparkLine.toFloat())
@@ -248,7 +208,7 @@ fun fetchData(item: CryptoCurrency, timePeriod: TimePeriod){
             binding.lineChart.invalidate()
         }
     }
-    fun getChartBackground(coin: Coin): Drawable? {
+    private fun getChartBackground(coin: Coin): Drawable? {
         return if (coin.change.toDouble().isPositive()) {
             ContextCompat.getDrawable(requireContext(), R.drawable.background_chart_up)
         } else {
@@ -256,14 +216,14 @@ fun fetchData(item: CryptoCurrency, timePeriod: TimePeriod){
         }
     }
 
-    fun getColor( coin: Coin): Int {
+    private fun getColor(coin: Coin): Int {
         return if (coin.change.toDouble().isPositive()) {
             ContextCompat.getColor(requireContext(), R.color.green)
         } else {
             ContextCompat.getColor(requireContext(), R.color.red)
         }
     }
-    fun Double.isPositive(): Boolean = this > 0
+    private fun Double.isPositive(): Boolean = this > 0
     fun getChangeIcon(coin: Coin): Drawable? {
         return if (coin.change.toDouble().isPositive()) {
             ContextCompat.getDrawable(requireContext(), R.drawable.ic_green)

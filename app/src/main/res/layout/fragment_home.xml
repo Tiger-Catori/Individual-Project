@@ -72,6 +72,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent=".5"/>
 
+
+    <!--   TOP CURRRENCY RECYLERVIEW  -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/topCurrencyRecyclerView"
         android:layout_width="match_parent"

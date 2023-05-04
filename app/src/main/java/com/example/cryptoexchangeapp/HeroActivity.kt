@@ -64,8 +64,7 @@ class HeroActivity : AppCompatActivity() {
     }
 
     /**
-     * Navigate to the MainActivity and set flags to clear the activity stack.
-     * This ensures that users cannot navigate back to the login screen if they have already logged in.
+     * navigateToMainActivity() function is responsible for navigating from the current activity to the HomeActivity
      */
     private fun navigateToMainActivity() {
         val mainIntent = Intent(this, HomeActivity::class.java)

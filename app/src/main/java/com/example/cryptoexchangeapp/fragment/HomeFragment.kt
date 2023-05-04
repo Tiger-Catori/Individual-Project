@@ -99,45 +99,46 @@ class HomeFragment : Fragment(),TopMarketAdapter.ItemClickListner {
 
 
     /**
-     * The getTopCurrencyList method gets a list of top performing currency data from the API.
-     * The method uses the lifecycleScope.launch coroutine builder to make the API call
-     * on the IO dispatcher. This ensures that the API call is performed on a
-     * background thread to avoid blocking the main thread.
-     * Once the API call is complete, the method checks if the response is successful.
-     * If the response is successful, it updates the adapter for the binding.topCurrencyRecyclerView
-     * RecyclerView with a new TopMarketAdapter and passes the list of crypto currency
-     * data to the adapter. If the response is not successful, the method logs an error message.
+     * setTopGainsList() function is used to filter and sort a list of crypto
+     * currencies based on their 24-hour percent change, and then update the adapter
+     * for the top currency RecyclerView with the resulting list of
+     * currencies with positive 24-hour percent changes.
      */
     private fun setTopGainsList() {
-                val tempList:ArrayList<CryptoCurrency> = arrayListOf()
-                    list.forEachIndexed { index, cryptoCurrency ->
-                        if(cryptoCurrency.quotes.size>0){
-                            if (cryptoCurrency.quotes[0].percentChange24h!=null && cryptoCurrency.quotes[0].percentChange24h>0){
-                                tempList.add(cryptoCurrency)
-                            }
-                        }
-                    }
-        binding.progressBar.visibility=View.GONE
-               tempList.sortBy{ it.quotes[0].percentChange24h}
-                    mAdapter?.updateList(tempList)
-                }
+        val tempList = list.filter {
+            it.quotes.isNotEmpty() && it.quotes[0].percentChange24h > 0.0
+        }.sortedByDescending { it.quotes[0].percentChange24h }
+            .takeWhile { it.quotes[0].percentChange24h > 0.0 }
+            .toMutableList()
 
-private fun setTopLosesList() {
-    val tempList:ArrayList<CryptoCurrency> = arrayListOf()
-    list.forEachIndexed { index, cryptoCurrency ->
-        if(cryptoCurrency.quotes.size>0){
-            if (cryptoCurrency.quotes[0].percentChange24h!=null && cryptoCurrency.quotes[0].percentChange24h<0){
-                tempList.add(cryptoCurrency)
-            }
-        }
+        binding.progressBar.visibility = View.GONE
+        mAdapter?.updateList(tempList)
     }
-    binding.progressBar.visibility=View.GONE
-    tempList.sortByDescending{ it.quotes[0].percentChange24h}
-    mAdapter?.updateList(tempList)
-}
 
 
-    fun fetchData(){
+
+    /**
+     * setTopLosesList() function is responsible
+     * for filtering and sorting a list of crypto currencies based
+     * on their 24-hour percent change and then updating the adapter
+     * for the top currency RecyclerView with the resulting list
+     * */
+    private fun setTopLosesList() {
+        val tempList = list.filter {
+            it.quotes.isNotEmpty() && it.quotes[0].percentChange24h < 0.0
+        }.toMutableList()
+
+        binding.progressBar.visibility = View.GONE
+        tempList.sortBy { it.quotes[0].percentChange24h }
+        mAdapter?.updateList(tempList)
+    }
+
+
+
+    /**
+     * Makes an API call to fetch market data for crypto currencies.
+     * */
+    private fun fetchData(){
         isFetching=true
         binding.progressBar.visibility=View.VISIBLE
         lifecycleScope.launch {
@@ -160,14 +161,17 @@ private fun setTopLosesList() {
         }
     }
 
+    /**
+     * Handles the click events for items in the top currency RecyclerView.
+     * */
     override fun onItemClickListner(item: CryptoCurrency) {
         val coin= DataHelper.listOfCoins().find { it.symbol==item.symbol }
         coin?.let { coinsID ->
             // Create a NavDirections object with the necessary arguments
-            val coinITem=item
-            coinITem.coinUUID=coinsID.uuid
-           DetailsActivity.dataItem=coinITem
-            val intent=Intent(requireActivity(),DetailsActivity::class.java)
+            val coinItem=item
+            coinItem.coinUUID=coinsID.uuid
+           DetailsActivity.dataItem=coinItem
+            val intent=Intent(requireActivity(), DetailsActivity::class.java)
             startActivity(intent)
         }
 
