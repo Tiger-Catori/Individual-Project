@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/group_1"
+        android:checkableBehavior="single" >
+        <item
+            android:id="@+id/item_1"
+            android:icon="@drawable/baseline_folder_24"
+            android:title="@string/my_files"
+            android:fontFamily="@font/montserrat"
+            android:checkable="true" />
+
+        <item
+            android:id="@+id/item_2"
+            android:icon="@drawable/baseline_people_24"
+            android:title="@string/shared_with_me"
+            android:fontFamily="@font/montserrat"
+             />
+
+        <item
+            android:id="@+id/item_3"
+            android:icon="@drawable/baseline_access_time_24"
+            android:title="@string/recent"
+            android:fontFamily="@font/montserrat"
+             />
+
+        <item
+            android:id="@+id/item_4"
+            android:icon="@drawable/baseline_favorite_24"
+            android:title="@string/favourites"
+            android:fontFamily="@font/montserrat"
+             />
+
+        <item
+            android:id="@+id/item_5"
+            android:icon="@drawable/baseline_backup_24"
+            android:title="@string/backups"
+            android:fontFamily="@font/montserrat"
+             />
+
+    </group>
+
+    <group
+        android:id="@+id/group_2"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/account"
+            android:title="@string/account"
+            android:fontFamily="@font/montserrat">
+
+            <menu>
+                <item
+                    android:id="@+id/item_6"
+                    android:icon="@drawable/baseline_settings_24"
+                    android:title="@string/settings"
+                    android:fontFamily="@font/montserrat"/>
+
+
+                <item
+                    android:id="@+id/item_7"
+                    android:icon="@drawable/baseline_language_24"
+                    android:title="@string/langauge"
+                    android:fontFamily="@font/montserrat"/>
+
+
+            </menu>
+
+        </item>
+
+
+
+    </group>
+</menu>
+
+    <!--
+                <item
+                    android:id="@+id/btn_logout"
+                    android:icon="@drawable/baseline_login_24"
+                    android:title="@string/btn_logout"
+                    android:fontFamily="@font/montserrat"/>
+
+    -->

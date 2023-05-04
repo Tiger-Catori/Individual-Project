@@ -1,0 +1,84 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+
+
+class HomeActivity {
+
+    ActivityMainBinding binding
+    FirebaseAuth auth
+
+    onCreate()
+    initFirebase()
+    initViews()
+    setUpTabBar()
+}
+
+
+class MainActivity {
+
+    ActivityMainBinding binding
+    FirebaseAuth auth
+
+    onCreate()
+    initFirebase()
+    initViews()
+    onStart()
+}
+
+
+class ResetPasswordActivity {
+
+    ActivityMainBinding binding
+    FirebaseAuth auth
+
+    onCreate()
+    initFirebase()
+    initViews()
+    formValidation()
+    resetPassword()
+    showToast()
+    showInvalidEmailAlert()
+
+}
+
+class LoginActivity {
+
+    ActivityMainBinding binding
+    FirebaseAuth auth
+    GoogleSignInClient googleLogin
+    launcher
+
+    onCreate()
+    initFirebase()
+    initViews()
+    formValidation()
+    loginGoogle()
+    manageResults()
+    updateUserInterface()
+    showTextMinimalAlert()
+    loginUser()
+}
+
+
+class RegisterActivity {
+
+    ActivityMainBinding binding
+    FirebaseAuth auth
+    GoogleSignInClient googleLogin
+    launcher
+
+    onCreate()
+    initFirebase()
+    initViews()
+    formValidation()
+    showNameExistAlert()
+    showTextMinimalAlert()
+    showValidEmailAlert()
+    showPasswordConfirmAlert()
+    registerUser()
+}
+
+
+@enduml

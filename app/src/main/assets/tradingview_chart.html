@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tradingview.com/tv.js"></script>
+</head>
+<body>
+<div id="tradingview-chart" style="width: 100%; height: 100%"></div>
+<script>
+        const tradingViewData = JSON.parse(window.android.getTradingViewData());
+        const widget = new TradingView.widget({
+            container_id: 'tradingview-chart',
+            symbol: tradingViewData.symbol,
+            interval: 'D',
+            timezone: 'Etc/UTC',
+            theme: 'Dark',
+            style: '1',
+            toolbar_bg: '#131722',
+            withdateranges: false,
+            hide_side_toolbar: false,
+            allow_symbol_change: false,
+            save_image: false,
+            details: true,
+            calendar: true,
+            width: '100%',
+            height: '100%',
+            locale: 'en',
+        });
+    </script>
+</body>
+</html>
