@@ -107,44 +107,6 @@ class DetailsActivity : AppCompatActivity() {
     }
 
 
-    // Load the chart for the given CryptoCurrency item
-    /*    private fun loadChart(item: CryptoCurrency) {
-            // Enable JavaScript and set layer type for the WebView
-            binding.detailChartWebView.settings.javaScriptEnabled = true
-            binding.detailChartWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-
-            // Construct the URL for the TradingView chart
-            //val itemSymbol = "BTC"
-            //val timeInterval = "1D"
-
-            val chartUrl = "https://s.tradingview.com/widgetembed?" +
-                    "symbol=${item}USD&" +
-                    "interval=1D&" +
-                    "hidesidetoolbar=1&" +
-                    "hidetoptoolbar=1&" +
-                    "symboledit=1&" +
-                    "saveimage=1&" +
-                    "toolbarbg=F1F3F6&" +
-                    "studies=[]&" +
-                    "hideideas=1&" +
-                    "theme=Dark&" +
-                    "style=1&" +
-                    "timezone=Etc%2FUTC&" +
-                    "studies_overrides={}&" +
-                    "overrides={}&" +
-                    "enabled_features=[]&" +
-                    "disabled_features=[]&" +
-                    "locale=en&" +
-                    "utm_source=coinmarketcap.com&" +
-                    "utm_medium=widget&" +
-                    "utm_campaign=chart&" +
-                    "utm_term=BTCUSDT"
-
-            // Load the TradingView chart in the WebView
-            binding.detailChartWebView.loadUrl(chartUrl)
-        }*/
-
-
     // Set up the details of the CryptoCurrency data object
     private fun setUpDetails(data: CryptoCurrency) {    val url = "https://s2.coinmarketcap.com/static/img/coins/64x64/${data.id}.png"
 
