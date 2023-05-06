@@ -56,9 +56,9 @@ class HomeFragment : Fragment(),TopMarketAdapter.ItemClickListner {
 
 //        getTopCurrencyList()
 //        setTabLayout()
-            binding.imgMenu.setOnClickListener {
-                (requireActivity() as HomeActivity).drawerClick()
-            }
+        binding.imgMenu.setOnClickListener {
+            (requireActivity() as HomeActivity).drawerClick()
+        }
         fetchData()
 
         binding.btnTopGains.setOnClickListener {

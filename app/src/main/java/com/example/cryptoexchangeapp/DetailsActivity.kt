@@ -26,7 +26,7 @@ class DetailsActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       binding= ActivityDetailsBinding.inflate(layoutInflater)
+        binding= ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.progressBar.visibility= View.VISIBLE
         binding.lineChart.setNoDataText("Loading Graph Data..")
@@ -36,7 +36,7 @@ class DetailsActivity : AppCompatActivity() {
             /*loadChart(data)*/
             setButtonOnClick(data)
             binding.backStackButton.setOnClickListener {
-            finish()
+                finish()
             }
             loadChartData(binding.btnDaily,TimePeriod.DAILY, data)
         }
@@ -152,22 +152,12 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    private  val LABEL = "Price"
-    private  val RIGHT_PARENTHESES = ")"
-    private  val LEFT_PARENTHESES = " ("
-    private  val ANALYTICS_SEPARATOR = " - "
-    private  val LINE_WIDTH = 2F
-    fun setUpLineChartData(coin: Coin) {
-        /*var entries:List<Entry> = listOf()
-        coin.sparkline?.forEachIndexed { index, sparkLine ->
-            sparkLine?.let {
-                try {
-                    Entry(index.toFloat(), sparkLine.toFloat())
-                } catch (e: Exception) {
-
-                }
-            }
-        }*/
+    private val LABEL = "Price"
+    private val RIGHT_PARENTHESES = ")"
+    private val LEFT_PARENTHESES = " ("
+    private val ANALYTICS_SEPARATOR = " - "
+    private val LINE_WIDTH = 2F
+    private fun setUpLineChartData(coin: Coin) {
         val entries = coin.sparkline.mapIndexed { index, sparkLine ->
             try {
                 Entry(index.toFloat(), sparkLine.toFloat())
@@ -192,7 +182,7 @@ class DetailsActivity : AppCompatActivity() {
             binding.lineChart.invalidate()
         }
     }
-    fun getChartBackground(coin: Coin): Drawable? {
+    private fun getChartBackground(coin: Coin): Drawable? {
         return if (coin.change.toDouble().isPositive()) {
             ContextCompat.getDrawable(this@DetailsActivity, R.drawable.background_chart_up)
         } else {
@@ -200,14 +190,14 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    fun getColor( coin: Coin): Int {
+    private fun getColor(coin: Coin): Int {
         return if (coin.change.toDouble().isPositive()) {
             ContextCompat.getColor(this@DetailsActivity, R.color.green)
         } else {
             ContextCompat.getColor(this@DetailsActivity, R.color.red)
         }
     }
-    fun Double.isPositive(): Boolean = this > 0
+    private fun Double.isPositive(): Boolean = this > 0
     fun getChangeIcon(coin: Coin): Drawable? {
         return if (coin.change.toDouble().isPositive()) {
             ContextCompat.getDrawable(this@DetailsActivity, R.drawable.ic_green)
@@ -227,6 +217,6 @@ class DetailsActivity : AppCompatActivity() {
         YEARS3("3y")
     }
     override fun onBackPressed() {
-       finish()
+        finish()
     }
 }
