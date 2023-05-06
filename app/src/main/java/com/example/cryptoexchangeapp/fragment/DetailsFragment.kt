@@ -208,41 +208,73 @@ private fun fetchData(item: CryptoCurrency, timePeriod: TimePeriod){
             binding.lineChart.invalidate()
         }
     }
+
+    /**
+     * Returns the appropriate chart background based on the coin's change value.
+     * @param coin The Coin object containing the change value.
+     * @return The Drawable resource for the chart background.
+     */
     private fun getChartBackground(coin: Coin): Drawable? {
-        return if (coin.change.toDouble().isPositive()) {
-            ContextCompat.getDrawable(requireContext(), R.drawable.background_chart_up)
+        // Check if the coin's change value is positive or negative.
+        val backgroundResource = if (coin.change.toDoubleOrNull()?.isPositive() == true) {
+            R.drawable.background_chart_up
         } else {
-            ContextCompat.getDrawable(requireContext(), R.drawable.background_chart_down)
+            R.drawable.background_chart_down
         }
+        // Get and return the Drawable from the resource.
+        return ContextCompat.getDrawable(requireContext(), backgroundResource)
     }
 
+
+    /**
+     * Returns the appropriate color based on the coin's change value.
+     * @param coin The Coin object containing the change value.
+     * @return The color resource for the chart.
+     */
     private fun getColor(coin: Coin): Int {
-        return if (coin.change.toDouble().isPositive()) {
-            ContextCompat.getColor(requireContext(), R.color.green)
+        // Check if the coin's change value is positive or negative.
+        val colorResource = if (coin.change.toDoubleOrNull()?.isPositive() == true) {
+            R.color.green
         } else {
-            ContextCompat.getColor(requireContext(), R.color.red)
+            R.color.red
         }
+        // Get and return the color from the resource.
+        return ContextCompat.getColor(requireContext(), colorResource)
     }
+
+
+    // Extension function to check if a Double is positive
     private fun Double.isPositive(): Boolean = this > 0
-    fun getChangeIcon(coin: Coin): Drawable? {
-        return if (coin.change.toDouble().isPositive()) {
-            ContextCompat.getDrawable(requireContext(), R.drawable.ic_green)
+
+    /**
+     * Returns the appropriate change icon based on the coin's change value.
+     * @param coin The Coin object containing the change value.
+     * @return The Drawable resource for the change icon.
+     */
+    private fun getChangeIcon(coin: Coin): Drawable? {
+        // Check if the coin's change value is positive or negative.
+        val iconResource = if (coin.change.toDoubleOrNull()?.isPositive() == true) {
+            R.drawable.ic_green
         } else {
-            ContextCompat.getDrawable(requireContext(), R.drawable.ic_red)
+            R.drawable.ic_red
         }
+
+        // Get and return the Drawable from the resource.
+        return ContextCompat.getDrawable(requireContext(), iconResource)
     }
+
+    // Enum class to represent time periods
     enum class TimePeriod(val param: String) {
-        HOUR("1h"),
-        HOURS3("3h"),
-        HOURS12("12h"),
         DAILY("24h"),
         WEEKLY("7d"),
-        MONTHLY("30d") ,
-        MONTHS3("3m"),
-        YEAR1("1y"),
-        YEARS3("3y")
+        MONTHLY("30d")
     }
-    fun onBackPressed(){
+
+    /**
+     * Handles the back button press by navigating to the previous screen.
+     */
+    private fun onBackPressed() {
         findNavController().popBackStack()
     }
+
 }
