@@ -74,14 +74,14 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
-public fun drawerClick(){
-    if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
-    }else{
-        binding.drawerLayout.openDrawer(GravityCompat.START)
-    }
+     fun drawerClick(){
+        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }else{
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
 
-}
+    }
 }
 
 

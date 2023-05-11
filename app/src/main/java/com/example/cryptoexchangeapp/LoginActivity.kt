@@ -236,7 +236,6 @@ class LoginActivity : AppCompatActivity() {
      * If the sign-in was not successful, the method displays a toast message with
      * the error message stored in the message property of the exception object of the login object.
      */
-
     private fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { loginTask ->
             if (loginTask.isSuccessful) {

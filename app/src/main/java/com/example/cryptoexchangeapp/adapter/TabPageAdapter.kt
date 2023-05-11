@@ -25,6 +25,4 @@ class TabPageAdapter(activity: FragmentActivity, private val tabCount: Int) : Fr
         return fragmentMap[position] ?: HomeFragment()
     }
 
-
-
 }

@@ -42,7 +42,7 @@ class DetailsActivity : AppCompatActivity() {
         }
 
     }
-    fun fetchData(item: CryptoCurrency, timePeriod: TimePeriod){
+    private fun fetchData(item: CryptoCurrency, timePeriod: TimePeriod){
         lifecycleScope.launch {
             val res = withContext(Dispatchers.IO) {
                 ApiUtilities.getInstanceCoinranking().create(ApiInterface::class.java).getCoinDetail(item.coinUUID,timePeriod.param)

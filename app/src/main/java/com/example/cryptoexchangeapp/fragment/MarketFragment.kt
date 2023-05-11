@@ -113,7 +113,7 @@ class MarketFragment : Fragment(), MarketAdapter.OnItemClickListener {
             coinName.contains(searchText) || coinSymbol.contains(searchText)
         }
 
-        adapter.updateData(if (filteredData.isNotEmpty()) filteredData else list)
+        adapter.updateData(filteredData.ifEmpty { list })
     }
 
 

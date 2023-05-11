@@ -48,7 +48,7 @@ class TopMarketAdapter(var context: Context, var list: List<CryptoCurrency>,val 
     private fun CryptoCurrencyViewHolder.bind(item: CryptoCurrency) {
         binding.currencyNameTextView.text = item.name
         binding.currencyCardView.setOnClickListener {
-            listner.onItemClickListner(item)
+            listner.onItemClickListener(item)
         }
         bindImage(item)
         bindChangeText(item)
@@ -90,6 +90,6 @@ class TopMarketAdapter(var context: Context, var list: List<CryptoCurrency>,val 
     }
 
 interface ItemClickListner{
-    fun onItemClickListner(item:CryptoCurrency)
+    fun onItemClickListener(item:CryptoCurrency)
 }
 }

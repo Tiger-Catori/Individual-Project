@@ -71,29 +71,43 @@ class HomeFragment : Fragment(),TopMarketAdapter.ItemClickListner {
     }
 
     /**
-     * The setTabLayout method sets up a tab layout and a view pager to display the content in tabs.
+     * Updates the tab view by changing the content and appearance of the selected tab.
+     * If the currently selected tab is different from the provided tabView, this method
+     * updates the lastSelected variable, sets the appropriate content for the new tab,
+     * and updates the tab buttons' background resources.
+     *
+     * @param tabView The index of the tab to be selected (0 for Top Gains, 1 for Top Loses).
      */
-    private fun updateTabView(tabView:Int) {
-        if(lastSelected!=tabView){
-            when(tabView){
-                0->{
-                    lastSelected=0
-                    setTopGainsList()
+    private fun updateTabView(tabView: Int) {
+        if (lastSelected != tabView) {
+            lastSelected = tabView
 
-                    binding.btnTopGains.setBackgroundResource(R.drawable.tab_bg_selected)
-                    binding.btnLosses.setBackgroundResource(R.drawable.tab_bg_unselected)
-                }
-                1->{
-                    setTopLosesList()
-                    lastSelected=1
-                    binding.btnTopGains.setBackgroundResource(R.drawable.tab_bg_unselected)
-                    binding.btnLosses.setBackgroundResource(R.drawable.tab_bg_selected)
-                }
+            when (tabView) {
+                0 -> setTopGainsList()
+                1 -> setTopLosesList()
             }
+
+            updateTabButtons()
         }
-
-
     }
+
+    /**
+     * Updates the background resources of the tab buttons based on the selected tab.
+     * If the Top Gains tab (index 0) is selected, the Top Gains button will have the
+     * selected background, and the Top Loses button will have the unselected background.
+     * If the Top Loses tab (index 1) is selected, the Top Loses button will have the
+     * selected background, and the Top Gains button will have the unselected background.
+     */
+    private fun updateTabButtons() {
+        binding.btnTopGains.setBackgroundResource(
+            if (lastSelected == 0) R.drawable.tab_bg_selected else R.drawable.tab_bg_unselected
+        )
+        binding.btnLosses.setBackgroundResource(
+            if (lastSelected == 1) R.drawable.tab_bg_selected else R.drawable.tab_bg_unselected
+        )
+    }
+
+
 
 
 
@@ -164,15 +178,18 @@ class HomeFragment : Fragment(),TopMarketAdapter.ItemClickListner {
     /**
      * Handles the click events for items in the top currency RecyclerView.
      * */
-    override fun onItemClickListner(item: CryptoCurrency) {
-        val coin= DataHelper.listOfCoins().find { it.symbol==item.symbol }
+    override fun onItemClickListener(cryptoCurrency: CryptoCurrency) {
+        val coin= DataHelper.listOfCoins().find { it.symbol==cryptoCurrency.symbol }
         coin?.let { coinsID ->
             // Create a NavDirections object with the necessary arguments
-            val coinItem=item
-            coinItem.coinUUID=coinsID.uuid
-           DetailsActivity.dataItem=coinItem
+            val item = cryptoCurrency
+            item.coinUUID=coinsID.uuid
+            DetailsActivity.dataItem=item
             val intent=Intent(requireActivity(), DetailsActivity::class.java)
             startActivity(intent)
+            /*  val action = MarketFragmentDirections.actionMarketFragmentToDetailsFragment(item)
+              // Navigate to the DetailsFragment using the NavController
+              findNavController().navigate(action)*/
         }
 
     }
